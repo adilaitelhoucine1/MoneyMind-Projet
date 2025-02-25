@@ -19,6 +19,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', CheckIfAdmin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
+    Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
 });
 
 

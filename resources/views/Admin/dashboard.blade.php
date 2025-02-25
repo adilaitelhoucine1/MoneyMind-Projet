@@ -2,272 +2,306 @@
 
 @section('styles')
 <style>
+    :root {
+        --primary-gradient: linear-gradient(135deg, #4F46E5, #7C3AED);
+        --secondary-gradient: linear-gradient(135deg, #2563EB, #1D4ED8);
+        --success-gradient: linear-gradient(135deg, #059669, #047857);
+        --danger-gradient: linear-gradient(135deg, #DC2626, #B91C1C);
+        --warning-gradient: linear-gradient(135deg, #D97706, #B45309);
+        --card-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+        --hover-transform: translateY(-5px);
+        --glass-bg: rgba(255, 255, 255, 0.95);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
     .admin-welcome-card {
-        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-        border-radius: 12px;
-        padding: 2rem;
+        background: var(--primary-gradient);
+        border-radius: 24px;
+        padding: 3rem;
         color: white;
         position: relative;
         overflow: hidden;
-        margin-bottom: 2rem;
-        box-shadow: 0 10px 20px rgba(58, 134, 255, 0.15);
+        margin-bottom: 2.5rem;
+        box-shadow: var(--glass-shadow);
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
     }
-    
-    .admin-welcome-card::before {
-        content: '';
-        position: absolute;
-        top: -50px;
-        right: -50px;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
+
+    .admin-welcome-card h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
-    
+
+    .admin-welcome-card p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+
+    .admin-welcome-card::before,
     .admin-welcome-card::after {
         content: '';
         position: absolute;
-        bottom: -80px;
-        left: -80px;
-        width: 300px;
-        height: 300px;
         border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+        animation: pulse 10s infinite;
+    }
+
+    .admin-welcome-card::before {
+        width: 400px;
+        height: 400px;
+        top: -200px;
+        right: -200px;
+        animation-delay: 0s;
     }
     
-    .admin-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
+    .admin-welcome-card::after {
+        width: 300px;
+        height: 300px;
+        bottom: -150px;
+        left: -150px;
+        animation-delay: -5s;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.2); opacity: 0.3; }
+        100% { transform: scale(1); opacity: 0.5; }
     }
     
     .admin-stat-card {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
-        border-bottom: 3px solid transparent;
+        background: var(--glass-bg);
+        border-radius: 20px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .admin-stat-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        transform: var(--hover-transform);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
     
     .admin-stat-card.users {
-        border-bottom-color: var(--primary-color);
-    }
-    
-    .admin-stat-card.transactions {
-        border-bottom-color: var(--success-color);
+        background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
     }
     
     .admin-stat-card.revenue {
-        border-bottom-color: var(--accent-color);
+        background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
     }
     
-    .admin-stat-card.growth {
-        border-bottom-color: var(--secondary-color);
+    .admin-stat-card.inactive {
+        background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
+    }
+    
+    .admin-stat-card.categories {
+        background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
     }
     
     .admin-stat-icon {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        color: white;
-        margin-bottom: 1rem;
+        width: 70px;
+        height: 70px;
+        border-radius: 18px;
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
     }
-    
-    .admin-stat-icon.users {
-        background-color: var(--primary-color);
+
+    .admin-stat-icon::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: shimmer 3s infinite;
     }
-    
-    .admin-stat-icon.transactions {
-        background-color: var(--success-color);
-    }
-    
-    .admin-stat-icon.revenue {
-        background-color: var(--accent-color);
-    }
-    
-    .admin-stat-icon.growth {
-        background-color: var(--secondary-color);
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
     }
     
     .admin-stat-value {
-        font-size: 1.8rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        line-height: 1.2;
     }
     
     .admin-stat-label {
-        color: var(--text-secondary);
-        font-size: 0.9rem;
+        color: #6B7280;
+        font-size: 0.95rem;
+        font-weight: 500;
     }
     
     .admin-stat-change {
         display: inline-flex;
         align-items: center;
-        font-size: 0.85rem;
-        padding: 0.25rem 0.5rem;
+        font-size: 0.9rem;
+        padding: 0.35rem 0.75rem;
         border-radius: 20px;
-        margin-top: 0.5rem;
+        margin-top: 0.75rem;
+        font-weight: 500;
     }
     
     .admin-stat-change.positive {
-        background-color: rgba(6, 214, 160, 0.1);
-        color: var(--success-color);
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #059669;
     }
     
     .admin-stat-change.negative {
-        background-color: rgba(239, 71, 111, 0.1);
-        color: var(--danger-color);
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #DC2626;
     }
-    
-    .admin-chart-container {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
-        margin-bottom: 2rem;
-    }
-    
-    .admin-chart-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-    }
-    
-    .admin-chart-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        margin-bottom: 0;
-    }
-    
-    .admin-chart-period {
-        display: flex;
-        align-items: center;
-    }
-    
-    .period-selector {
-        background-color: var(--background-color);
-        border: none;
+
+    .admin-panel {
+        background: var(--glass-bg);
         border-radius: 20px;
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-        color: var(--text-color);
-        cursor: pointer;
-        transition: all 0.3s;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
     }
-    
-    .period-selector:hover {
-        background-color: rgba(58, 134, 255, 0.1);
-    }
-    
-    .admin-chart {
-        height: 300px;
-        position: relative;
-    }
-    
-    .admin-table-container {
-        background: var(--card-bg);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
+
+    .admin-panel-header {
         margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
     
-    .admin-table-header {
+    .admin-panel-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #1F2937;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 1.5rem;
+        gap: 0.75rem;
     }
-    
-    .admin-table-title {
-        font-size: 1.2rem;
+
+    .admin-panel-title i {
+        font-size: 1.25rem;
+        padding: 0.75rem;
+        border-radius: 12px;
+        background: var(--primary-gradient);
+        color: white;
+    }
+
+    .table {
+        border-collapse: separate;
+        border-spacing: 0 0.5rem;
+    }
+
+    .table thead th {
+        background: transparent;
         font-weight: 600;
-        margin-bottom: 0;
+        color: #4B5563;
+        padding: 1.25rem 1rem;
+        border: none;
     }
-    
-    .admin-table-actions {
+
+    .table tbody tr {
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        transition: all 0.3s ease;
+    }
+
+    .table tbody tr:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .table tbody td {
+        padding: 1.25rem 1rem;
+        border: none;
+    }
+
+    .table tbody td:first-child {
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+    }
+
+    .table tbody td:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-light {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .btn-light:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .category-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .category-tag {
+        background: var(--glass-bg);
+        border-radius: 16px;
+        padding: 1.25rem;
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .category-tag:hover {
+        transform: translateY(-3px) scale(1.02);
+    }
+
+    .category-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 14px;
+        font-size: 1.5rem;
+        background: var(--primary-gradient);
+        box-shadow: 0 8px 16px -4px rgba(79, 70, 229, 0.2);
+    }
+
+    .category-name {
+        flex: 1;
+        font-weight: 500;
+        color: #1F2937;
+    }
+
+    .category-actions {
         display: flex;
         gap: 0.5rem;
-    }
-    
-    .admin-table {
-        width: 100%;
-    }
-    
-    .admin-table th {
-        font-weight: 600;
-        color: var(--text-secondary);
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        padding: 1rem 0.5rem;
-    }
-    
-    .admin-table td {
-        padding: 1rem 0.5rem;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        vertical-align: middle;
-    }
-    
-    .admin-table tr:last-child td {
-        border-bottom: none;
-    }
-    
-    .user-info {
-        display: flex;
-        align-items: center;
-    }
-    
-    .user-avatar {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        margin-right: 0.75rem;
-    }
-    
-    .user-name {
-        font-weight: 600;
-        margin-bottom: 0.25rem;
-    }
-    
-    .user-email {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
-    }
-    
-    .status-badge {
-        display: inline-block;
-        padding: 0.35rem 0.75rem;
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-    
-    .status-badge.active {
-        background-color: rgba(6, 214, 160, 0.1);
-        color: var(--success-color);
-    }
-    
-    .status-badge.pending {
-        background-color: rgba(255, 190, 11, 0.1);
-        color: var(--warning-color);
-    }
-    
-    .status-badge.inactive {
-        background-color: rgba(239, 71, 111, 0.1);
-        color: var(--danger-color);
     }
     
     .action-btn {
@@ -277,496 +311,382 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        color: var(--text-secondary);
-        background-color: transparent;
+        color: #6B7280;
+        background: transparent;
         border: none;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: all 0.3s ease;
     }
     
     .action-btn:hover {
-        background-color: rgba(0,0,0,0.05);
-        color: var(--primary-color);
+        background: #F3F4F6;
+        color: #6366F1;
     }
-    
-    .admin-activity-container {
-        background: var(--card-bg);
+
+    .chart-container {
+        position: relative;
+        margin-top: 1rem;
+    }
+
+    .modal-content {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        border-radius: 24px;
+        box-shadow: var(--glass-shadow);
+    }
+
+    .form-control, .form-select {
         border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: var(--card-shadow);
+        padding: 0.875rem 1.25rem;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(5px);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #4F46E5;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        background: white;
+    }
+
+    @media (max-width: 768px) {
+        .admin-welcome-card {
+            padding: 2rem;
+        }
+
+        .admin-welcome-card h2 {
+            font-size: 2rem;
+        }
+
+        .admin-stat-card {
+            padding: 1.5rem;
+        }
+
+        .admin-stat-value {
+            font-size: 2rem;
+        }
+    }
+
+    .dashboard-header {
+        background: var(--primary-gradient);
+        border-radius: 24px;
+        padding: 2.5rem;
+        color: white;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
     }
     
-    .admin-activity-header {
+    .dashboard-header::before,
+    .dashboard-header::after {
+        content: '';
+        position: absolute;
+        border-radius: 50%;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+        animation: pulse 10s infinite;
+    }
+
+    .dashboard-header::before {
+        width: 300px;
+        height: 300px;
+        top: -150px;
+        right: -150px;
+    }
+
+    .dashboard-header::after {
+        width: 200px;
+        height: 200px;
+        bottom: -100px;
+        left: -100px;
+        animation-delay: -5s;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.2); opacity: 0.3; }
+        100% { transform: scale(1); opacity: 0.5; }
+    }
+
+    .quick-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: var(--glass-bg);
+        border-radius: 20px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-icon::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 200%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    .stat-icon.users { background: var(--primary-gradient); }
+    .stat-icon.revenue { background: var(--success-gradient); }
+    .stat-icon.expenses { background: var(--danger-gradient); }
+    .stat-icon.growth { background: var(--secondary-gradient); }
+
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1F2937;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        color: #6B7280;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .stat-change {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+
+    .stat-change.positive {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+    }
+
+    .stat-change.negative {
+        background: rgba(239, 68, 68, 0.1);
+        color: #DC2626;
+    }
+
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .chart-card {
+        background: var(--glass-bg);
+        border-radius: 20px;
+        padding: 1.5rem;
+        backdrop-filter: blur(10px);
+        border: var(--glass-border);
+        box-shadow: var(--glass-shadow);
+    }
+
+    .chart-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 1.5rem;
     }
-    
-    .admin-activity-title {
-        font-size: 1.2rem;
+
+    .chart-title {
+        font-size: 1.25rem;
         font-weight: 600;
-        margin-bottom: 0;
+        color: #1F2937;
     }
-    
-    .activity-timeline {
-        position: relative;
-        padding-left: 1.5rem;
+
+    .chart-actions {
+        display: flex;
+        gap: 0.5rem;
     }
-    
-    .activity-timeline::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 7px;
-        height: 100%;
-        width: 2px;
-        background-color: rgba(0,0,0,0.05);
+
+    .period-selector {
+        padding: 0.5rem 1rem;
+        border-radius: 12px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        background: white;
+        font-size: 0.875rem;
+        color: #4B5563;
+        cursor: pointer;
     }
-    
+
     .activity-item {
-        position: relative;
-        padding-bottom: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        padding: 1rem 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
-    
-    .activity-item:last-child {
-        padding-bottom: 0;
+
+    .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        margin-right: 1rem;
     }
-    
-    .activity-dot {
-        position: absolute;
-        left: -1.5rem;
-        top: 0;
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background-color: var(--primary-color);
-        border: 3px solid var(--card-bg);
-    }
-    
-    .activity-dot.login {
-        background-color: var(--primary-color);
-    }
-    
-    .activity-dot.transaction {
-        background-color: var(--success-color);
-    }
-    
-    .activity-dot.user {
-        background-color: var(--accent-color);
-    }
-    
-    .activity-dot.system {
-        background-color: var(--secondary-color);
-    }
-    
+
     .activity-content {
-        padding-left: 0.5rem;
+        flex: 1;
     }
-    
+
     .activity-title {
-        font-weight: 600;
+        font-weight: 500;
+        color: #1F2937;
         margin-bottom: 0.25rem;
     }
-    
+
     .activity-time {
-        font-size: 0.85rem;
-        color: var(--text-secondary);
+        font-size: 0.875rem;
+        color: #6B7280;
+    }
+
+    @media (max-width: 991.98px) {
+        .dashboard-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 @endsection
 
 @section('content')
 <div class="container-fluid">
-    <div class="admin-welcome-card">
-        <div class="row align-items-center">
-            <div class="col-lg-8">
-                <h2 class="mb-2">Bienvenue, Administrateur!</h2>
-                <p class="mb-4">Voici un aperçu de l'activité de la plateforme MoneyMind.</p>
-                <div class="d-flex gap-2">
-                    <a href="#" class="btn btn-light">Gérer les Utilisateurs</a>
-                    <a href="#" class="btn btn-outline-light">Voir les Rapports</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="col-lg-3 col-md-6">
-            <div class="admin-stat-card users">
-                <div class="admin-stat-icon users">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="admin-stat-value">1,254</div>
-                <div class="admin-stat-label">Utilisateurs Totaux</div>
-                <div class="admin-stat-change positive">
-                    <i class="fas fa-arrow-up me-1"></i> 12% ce mois
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6">
-            <div class="admin-stat-card revenue">
-                <div class="admin-stat-icon revenue">
-                    <i class="fas fa-money-bill-wave"></i>
-                </div>
-                <div class="admin-stat-value">3,850 DH</div>
-                <div class="admin-stat-label">Revenu Mensuel Moyen</div>
-                <div class="admin-stat-change positive">
-                    <i class="fas fa-arrow-up me-1"></i> 5% ce mois
-                </div>
+    <div class="dashboard-header">
+        <h2 class="mb-2">Bienvenue, {{ Auth::user()->name }}!</h2>
+        <p class="mb-4">Voici un aperçu de vos statistiques financières</p>
+        <div class="d-flex gap-3">
+            <button class="btn btn-light">
+                <i class="fas fa-download me-2"></i>Télécharger le rapport
+                                </button>
+            <button class="btn btn-light">
+                <i class="fas fa-share me-2"></i>Partager
+                                </button>
+                            </div>
+                        </div>
+                        
+    <div class="quick-stats">
+        <div class="stat-card">
+            <div class="stat-icon users">
+                <i class="fas fa-users"></i>
+                            </div>
+            <div class="stat-value">1,254</div>
+            <div class="stat-label">Utilisateurs actifs</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up me-1"></i>12% ce mois
             </div>
         </div>
         
-        <div class="col-lg-3 col-md-6">
-            <div class="admin-stat-card inactive">
-                <div class="admin-stat-icon inactive">
-                    <i class="fas fa-user-clock"></i>
+        <div class="stat-card">
+            <div class="stat-icon revenue">
+                <i class="fas fa-wallet"></i>
                 </div>
-                <div class="admin-stat-value">87</div>
-                <div class="admin-stat-label">Utilisateurs Inactifs</div>
-                <div class="admin-stat-change negative">
-                    <i class="fas fa-arrow-up me-1"></i> 3% ce mois
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-lg-3 col-md-6">
-            <div class="admin-stat-card categories">
-                <div class="admin-stat-icon categories">
-                    <i class="fas fa-tags"></i>
-                </div>
-                <div class="admin-stat-value">12</div>
-                <div class="admin-stat-label">Catégories</div>
-                <div class="admin-stat-change positive">
-                    <i class="fas fa-plus me-1"></i> 2 nouvelles
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="row mt-4">
-        <div class="col-lg-8">
-            <div class="admin-panel">
-                <div class="admin-panel-header">
-                    <h5 class="admin-panel-title">
-                        <i class="fas fa-user-clock me-2 text-danger"></i>
-                        Utilisateurs Inactifs
-                    </h5>
-                    <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#bulkDeleteModal">
-                        <i class="fas fa-trash me-1"></i> Supprimer Tous
-                    </button>
-                </div>
-                <div class="admin-panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Utilisateur</th>
-                                    <th>Email</th>
-                                    <th>Dernière Connexion</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://ui-avatars.com/api/?name=Ahmed+Alami&background=ef476f&color=fff" alt="User" class="rounded-circle me-2" width="40">
-                                            <div>
-                                                <div class="fw-bold">Ahmed Alami</div>
-                                                <div class="small text-secondary">Inscrit le 12/03/2023</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>ahmed.alami@example.com</td>
-                                    <td>Il y a 3 mois</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="1" data-user-name="Ahmed Alami">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://ui-avatars.com/api/?name=Sara+Bennani&background=ef476f&color=fff" alt="User" class="rounded-circle me-2" width="40">
-                                            <div>
-                                                <div class="fw-bold">Sara Bennani</div>
-                                                <div class="small text-secondary">Inscrite le 05/02/2023</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>sara.bennani@example.com</td>
-                                    <td>Il y a 4 mois</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="2" data-user-name="Sara Bennani">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            <img src="https://ui-avatars.com/api/?name=Karim+Idrissi&background=ef476f&color=fff" alt="User" class="rounded-circle me-2" width="40">
-                                            <div>
-                                                <div class="fw-bold">Karim Idrissi</div>
-                                                <div class="small text-secondary">Inscrit le 20/01/2023</div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>karim.idrissi@example.com</td>
-                                    <td>Il y a 2 mois</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteUserModal" data-user-id="3" data-user-name="Karim Idrissi">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+            <div class="stat-value">45,650 DH</div>
+            <div class="stat-label">Revenu total</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up me-1"></i>8% ce mois
                 </div>
             </div>
             
-            <div class="admin-panel mt-4">
-                <div class="admin-panel-header">
-                    <h5 class="admin-panel-title">
-                        <i class="fas fa-tags me-2 text-primary"></i>
-                        Gestion des Catégories
-                    </h5>
+        <div class="stat-card">
+            <div class="stat-icon expenses">
+                <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="admin-panel-body">
-                    <form class="add-category-form mb-4">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Nom de la catégorie">
-                            <select class="form-select" style="max-width: 150px;">
-                                <option value="" selected>Icône</option>
-                                <option value="home">Logement</option>
-                                <option value="utensils">Alimentation</option>
-                                <option value="car">Transport</option>
-                                <option value="shopping-bag">Shopping</option>
-                                <option value="gamepad">Divertissement</option>
-                            </select>
-                            <button type="submit" class="btn btn-primary">Ajouter</button>
-                        </div>
-                    </form>
-                    
-                    <div class="category-list">
-                        <div class="category-tag">
-                            <div class="category-icon"><i class="fas fa-home"></i></div>
-                            <div class="category-name">Logement</div>
-                            <div class="category-actions">
-                                <button class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="1" data-category-name="Logement" data-category-icon="home">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="1" data-category-name="Logement">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="category-tag">
-                            <div class="category-icon"><i class="fas fa-utensils"></i></div>
-                            <div class="category-name">Alimentation</div>
-                            <div class="category-actions">
-                                <button class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="2" data-category-name="Alimentation" data-category-icon="utensils">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="2" data-category-name="Alimentation">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="category-tag">
-                            <div class="category-icon"><i class="fas fa-car"></i></div>
-                            <div class="category-name">Transport</div>
-                            <div class="category-actions">
-                                <button class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="3" data-category-name="Transport" data-category-icon="car">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="3" data-category-name="Transport">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="category-tag">
-                            <div class="category-icon"><i class="fas fa-shopping-bag"></i></div>
-                            <div class="category-name">Shopping</div>
-                            <div class="category-actions">
-                                <button class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="4" data-category-name="Shopping" data-category-icon="shopping-bag">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="4" data-category-name="Shopping">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="category-tag">
-                            <div class="category-icon"><i class="fas fa-gamepad"></i></div>
-                            <div class="category-name">Divertissement</div>
-                            <div class="category-actions">
-                                <button class="action-btn edit" data-bs-toggle="modal" data-bs-target="#editCategoryModal" data-category-id="5" data-category-name="Divertissement" data-category-icon="gamepad">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" data-category-id="5" data-category-name="Divertissement">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="stat-value">28,320 DH</div>
+            <div class="stat-label">Dépenses totales</div>
+            <div class="stat-change negative">
+                <i class="fas fa-arrow-up me-1"></i>5% ce mois
+    </div>
+</div>
+
+        <div class="stat-card">
+            <div class="stat-icon growth">
+                <i class="fas fa-chart-line"></i>
             </div>
-        </div>
-        
-        <div class="col-lg-4">
-            <div class="admin-panel">
-                <div class="admin-panel-header">
-                    <h5 class="admin-panel-title">
-                        <i class="fas fa-chart-pie me-2 text-primary"></i>
-                        Répartition des Utilisateurs
-                    </h5>
-                </div>
-                <div class="admin-panel-body">
-                    <div style="height: 250px;">
-                        <canvas id="userStatusChart"></canvas>
-                    </div>
-                    <div class="mt-3">
-                        <div class="row text-center">
-                            <div class="col-4">
-                                <div class="fw-bold">65%</div>
-                                <div class="small text-secondary">Actifs</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">28%</div>
-                                <div class="small text-secondary">Occasionnels</div>
-                            </div>
-                            <div class="col-4">
-                                <div class="fw-bold">7%</div>
-                                <div class="small text-secondary">Inactifs</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="admin-panel mt-4">
-                <div class="admin-panel-header">
-                    <h5 class="admin-panel-title">
-                        <i class="fas fa-money-bill-wave me-2 text-success"></i>
-                        Revenu Mensuel Moyen
-                    </h5>
-                </div>
-                <div class="admin-panel-body">
-                    <div style="height: 250px;">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                </div>
-            </div>
+            <div class="stat-value">17,330 DH</div>
+            <div class="stat-label">Économies</div>
+            <div class="stat-change positive">
+                <i class="fas fa-arrow-up me-1"></i>15% ce mois
         </div>
     </div>
 </div>
 
-<!-- Delete User Modal -->
-<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="dashboard-grid">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h5 class="chart-title">Aperçu des dépenses</h5>
+                <div class="chart-actions">
+                    <select class="period-selector">
+                        <option>Cette semaine</option>
+                        <option>Ce mois</option>
+                        <option>Cette année</option>
+                    </select>
             </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer le compte de <span id="deleteUserName" class="fw-bold"></span>?</p>
-                <p class="text-danger">Cette action est irréversible et toutes les données associées seront perdues.</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteUser">Supprimer</button>
-            </div>
-        </div>
+            <div style="height: 300px;">
+                <canvas id="expensesChart"></canvas>
     </div>
 </div>
 
-<!-- Bulk Delete Modal -->
-<div class="modal fade" id="bulkDeleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmer la suppression en masse</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="chart-card">
+            <div class="chart-header">
+                <h5 class="chart-title">Activités récentes</h5>
             </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer tous les comptes inactifs (87 utilisateurs)?</p>
-                <p class="text-danger">Cette action est irréversible et toutes les données associées seront perdues.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-danger" id="confirmBulkDelete">Supprimer tous les comptes inactifs</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Category Modal -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modifier la catégorie</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editCategoryForm">
-                    <input type="hidden" id="editCategoryId">
-                    <div class="mb-3">
-                        <label for="editCategoryName" class="form-label">Nom de la catégorie</label>
-                        <input type="text" class="form-control" id="editCategoryName" required>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--primary-gradient)">
+                        <i class="fas fa-user"></i>
                     </div>
-                    <div class="mb-3">
-                        <label for="editCategoryIcon" class="form-label">Icône</label>
-                        <select class="form-select" id="editCategoryIcon">
-                            <option value="home">Maison</option>
-                            <option value="utensils">Nourriture</option>
-                            <option value="car">Transport</option>
-                            <option value="shopping-bag">Shopping</option>
-                            <option value="gamepad">Divertissement</option>
-                            <option value="graduation-cap">Éducation</option>
-                            <option value="heartbeat">Santé</option>
-                            <option value="plane">Voyage</option>
-                            <option value="gift">Cadeaux</option>
-                            <option value="coffee">Café</option>
-                        </select>
+                    <div class="activity-content">
+                        <div class="activity-title">Nouvel utilisateur inscrit</div>
+                        <div class="activity-time">Il y a 2 heures</div>
                     </div>
-                </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="saveCategory">Enregistrer</button>
+                <div class="activity-item">
+                    <div class="activity-icon" style="background: var(--success-gradient)">
+                        <i class="fas fa-money-bill"></i>
             </div>
+                    <div class="activity-content">
+                        <div class="activity-title">Nouvelle transaction</div>
+                        <div class="activity-time">Il y a 4 heures</div>
         </div>
     </div>
+                <!-- Add more activity items -->
 </div>
-
-<!-- Delete Category Modal -->
-<div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmer la suppression</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <p>Êtes-vous sûr de vouloir supprimer la catégorie <span id="deleteCategoryName" class="fw-bold"></span>?</p>
-                <p class="text-danger">Toutes les transactions associées à cette catégorie seront reclassées comme "Non catégorisées".</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteCategory">Supprimer</button>
-            </div>
-        </div>
     </div>
 </div>
 @endsection
@@ -774,26 +694,19 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // User Status Chart
-        var userStatusCtx = document.getElementById('userStatusChart').getContext('2d');
-        var userStatusChart = new Chart(userStatusCtx, {
-            type: 'doughnut',
+    // Initialize your charts here
+    const ctx = document.getElementById('expensesChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
             data: {
-                labels: ['Utilisateurs Actifs', 'Utilisateurs Occasionnels', 'Utilisateurs Inactifs'],
+            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
                 datasets: [{
-                    data: [65, 28, 7],
-                    backgroundColor: [
-                        'rgba(58, 134, 255, 0.8)',
-                        'rgba(255, 190, 11, 0.8)',
-                        'rgba(239, 71, 111, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(58, 134, 255, 1)',
-                        'rgba(255, 190, 11, 1)',
-                        'rgba(239, 71, 111, 1)'
-                    ],
-                    borderWidth: 1
+                label: 'Dépenses',
+                data: [1200, 1900, 1500, 2100, 1800, 2500, 2200],
+                borderColor: '#4F46E5',
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                tension: 0.4,
+                fill: true
                 }]
             },
             options: {
@@ -804,164 +717,20 @@
                         display: false
                     }
                 },
-                cutout: '70%'
-            }
-        });
-        
-        // Revenue Chart
-        var revenueCtx = document.getElementById('revenueChart').getContext('2d');
-        var revenueChart = new Chart(revenueCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin'],
-                datasets: [{
-                    label: 'Revenu Mensuel Moyen (DH)',
-                    data: [3200, 3500, 3300, 3700, 3900, 3850],
-                    backgroundColor: 'rgba(6, 214, 160, 0.8)',
-                    borderColor: 'rgba(6, 214, 160, 1)',
-                    borderWidth: 1,
-                    borderRadius: 5,
-                    maxBarThickness: 12
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        display: true,
+                        drawBorder: false
                     }
                 },
-                scales: {
                     x: {
                         grid: {
                             display: false
                         }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            borderDash: [2, 4]
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return value + ' DH';
-                            }
-                        }
-                    }
                 }
             }
-        });
-        
-        // Delete User Modal
-        var deleteUserModal = document.getElementById('deleteUserModal');
-        if (deleteUserModal) {
-            deleteUserModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var userId = button.getAttribute('data-user-id');
-                var userName = button.getAttribute('data-user-name');
-                
-                var userNameElement = document.getElementById('deleteUserName');
-                userNameElement.textContent = userName;
-                
-                var confirmButton = document.getElementById('confirmDeleteUser');
-                confirmButton.setAttribute('data-user-id', userId);
-            });
-            
-            var confirmDeleteUser = document.getElementById('confirmDeleteUser');
-            confirmDeleteUser.addEventListener('click', function() {
-                var userId = this.getAttribute('data-user-id');
-                // Ici, vous pouvez ajouter le code pour supprimer l'utilisateur via AJAX
-                console.log('Suppression de l\'utilisateur ID: ' + userId);
-                
-                // Fermer le modal après la suppression
-                var modal = bootstrap.Modal.getInstance(deleteUserModal);
-                modal.hide();
-                
-                // Afficher une notification de succès
-                alert('L\'utilisateur a été supprimé avec succès.');
-            });
-        }
-        
-        // Bulk Delete Modal
-        var bulkDeleteModal = document.getElementById('bulkDeleteModal');
-        if (bulkDeleteModal) {
-            var confirmBulkDelete = document.getElementById('confirmBulkDelete');
-            confirmBulkDelete.addEventListener('click', function() {
-                // Ici, vous pouvez ajouter le code pour supprimer tous les utilisateurs inactifs via AJAX
-                console.log('Suppression de tous les utilisateurs inactifs');
-                
-                // Fermer le modal après la suppression
-                var modal = bootstrap.Modal.getInstance(bulkDeleteModal);
-                modal.hide();
-                
-                // Afficher une notification de succès
-                alert('Tous les utilisateurs inactifs ont été supprimés avec succès.');
-            });
-        }
-        
-        // Edit Category Modal
-        var editCategoryModal = document.getElementById('editCategoryModal');
-        if (editCategoryModal) {
-            editCategoryModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var categoryId = button.getAttribute('data-category-id');
-                var categoryName = button.getAttribute('data-category-name');
-                var categoryIcon = button.getAttribute('data-category-icon');
-                
-                document.getElementById('editCategoryId').value = categoryId;
-                document.getElementById('editCategoryName').value = categoryName;
-                document.getElementById('editCategoryIcon').value = categoryIcon;
-            });
-            
-            var saveCategory = document.getElementById('saveCategory');
-            saveCategory.addEventListener('click', function() {
-                var categoryId = document.getElementById('editCategoryId').value;
-                var categoryName = document.getElementById('editCategoryName').value;
-                var categoryIcon = document.getElementById('editCategoryIcon').value;
-                
-                // Ici, vous pouvez ajouter le code pour mettre à jour la catégorie via AJAX
-                console.log('Mise à jour de la catégorie ID: ' + categoryId);
-                console.log('Nouveau nom: ' + categoryName);
-                console.log('Nouvelle icône: ' + categoryIcon);
-                
-                // Fermer le modal après la mise à jour
-                var modal = bootstrap.Modal.getInstance(editCategoryModal);
-                modal.hide();
-                
-                // Afficher une notification de succès
-                alert('La catégorie a été mise à jour avec succès.');
-            });
-        }
-        
-        // Delete Category Modal
-        var deleteCategoryModal = document.getElementById('deleteCategoryModal');
-        if (deleteCategoryModal) {
-            deleteCategoryModal.addEventListener('show.bs.modal', function(event) {
-                var button = event.relatedTarget;
-                var categoryId = button.getAttribute('data-category-id');
-                var categoryName = button.getAttribute('data-category-name');
-                
-                var categoryNameElement = document.getElementById('deleteCategoryName');
-                categoryNameElement.textContent = categoryName;
-                
-                var confirmButton = document.getElementById('confirmDeleteCategory');
-                confirmButton.setAttribute('data-category-id', categoryId);
-            });
-            
-            var confirmDeleteCategory = document.getElementById('confirmDeleteCategory');
-            confirmDeleteCategory.addEventListener('click', function() {
-                var categoryId = this.getAttribute('data-category-id');
-                // Ici, vous pouvez ajouter le code pour supprimer la catégorie via AJAX
-                console.log('Suppression de la catégorie ID: ' + categoryId);
-                
-                // Fermer le modal après la suppression
-                var modal = bootstrap.Modal.getInstance(deleteCategoryModal);
-                modal.hide();
-                
-                // Afficher une notification de succès
-                alert('La catégorie a été supprimée avec succès.');
-            });
         }
     });
 </script>
