@@ -424,13 +424,13 @@
                         <div class="mb-3">
                             <label class="form-label">Salaire Mensuel</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" name="amount" value="{{ Auth::user()->salaire_mensuel }}" required>
+                                <input type="number" class="form-control" name="amount" value="{{ Auth::user()->salaire_mensuel ?? ''}}" required>
                                 <span class="input-group-text">DH</span>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Date de Crédit</label>
-                            <input type="date" class="form-control" name="date_credit" value="{{ Auth::user()->date_credit }}" required>
+                            <input type="date" class="form-control" name="date_credit" value="{{ Auth::user()->date_credit ?? ''}}" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -567,7 +567,7 @@
                 <div class="stat-icon income">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <div class="stat-value">{{ Auth::user()->salaire_mensuel }}</div>
+                <div class="stat-value">{{ Auth::user()->salaire_mensuel }} DH</div>
                 <div class="stat-label">Revenu Mensuel</div>
                 <small class="text-muted">
                     Prochain crédit: {{ \Carbon\Carbon::parse(Auth::user()->date_credit)->format('d') }} du mois
