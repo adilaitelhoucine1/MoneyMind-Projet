@@ -367,15 +367,16 @@
                                 Actif
                             </span>
                         </td>
-                        <td>Il y a 2 heures</td>
+                        <td>{{$user->last_logged_in->diffForHumans()}} </td>
                         <td>
                             <div class="action-buttons">
-                                <button class="action-btn" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="action-btn delete" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="action-btn delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </div>
                         </td>
                     </tr>

@@ -9,10 +9,15 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('depenses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('categorie_id')->constrained()->onDelete('cascade');
+            $table->string('nom');
+            $table->decimal('prix', 10, 2);
+            $table->enum('type', ['global', 'récurrent']);
             $table->timestamps();
         });
     }

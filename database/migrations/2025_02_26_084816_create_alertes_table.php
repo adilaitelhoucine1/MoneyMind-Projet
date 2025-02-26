@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('alertes', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('message');
+            $table->enum('type', ['budget_bas', 'objectif_atteint', 'dépense_excessive']);
+            $table->boolean('est_lu')->default(false);
             $table->timestamps();
         });
     }

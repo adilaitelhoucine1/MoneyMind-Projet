@@ -404,9 +404,12 @@
                         <i class="fas fa-bell"></i>
                         <span class="notification-badge">3</span>
                     </div>
-                    <div class="admin-topbar-icon">
-                        <i class="fas fa-sign-out-alt"></i>
-                    </div>
+                    <a href="{{ route('logout') }}" class="admin-topbar-icon">
+                        <div>
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                    </a>
+                    
                 </div>
             </div>
             

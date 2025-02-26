@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('objectif_mensuels', function (Blueprint $table) {
+        Schema::create('objectifs_mensuels', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('nom');
+            $table->decimal('montant', 10, 2);
+            $table->date('date_objectif');
             $table->timestamps();
         });
     }
