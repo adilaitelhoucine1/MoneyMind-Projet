@@ -418,26 +418,26 @@
                     <h5 class="modal-title">Gérer Mon Salaire</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/user/salary/update" method="POST">
+                <form action="{{ route('Salaire.Store', Auth::id()) }}" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Salaire Mensuel</label>
                             <div class="input-group">
-                                <input type="number" class="form-control" name="amount" value="{{ $salary->amount ?? '' }}" required>
+                                <input type="number" class="form-control" name="amount" value="{{ Auth::user()->salaire_mensuel }}" required>
                                 <span class="input-group-text">DH</span>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Date de Crédit</label>
-                            <input type="number" class="form-control" name="credit_day" min="1" max="31" value="{{ $salary->credit_day ?? '' }}" required>
-                            <small class="text-muted">Jour du mois (1-31)</small>
+                            <input type="date" class="form-control" name="date_credit" value="{{ Auth::user()->date_credit }}" required>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-custom">Enregistrer</button>
                     </div>
                 </form>
+                
             </div>
         </div>
     </div>
@@ -567,10 +567,12 @@
                 <div class="stat-icon income">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <div class="stat-value">15,000 DH</div>
+                <div class="stat-value">{{ Auth::user()->salaire_mensuel }}</div>
                 <div class="stat-label">Revenu Mensuel</div>
-                <small class="text-muted">Prochain crédit: 25 du mois</small>
-            </div>
+                <small class="text-muted">
+                    Prochain crédit: {{ \Carbon\Carbon::parse(Auth::user()->date_credit)->format('d') }} du mois
+                </small>
+                            </div>
         </div>
         <div class="col-md-4">
             <div class="stat-card">

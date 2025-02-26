@@ -34,6 +34,7 @@ Route::middleware(['auth', CheckIfAdmin::class])->group(function () {
 Route::middleware(['auth', CheckIfUser::class])->group(function () {
     Route::get('/User/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
     Route::get('/User/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
+    Route::post('/User/salary/update/{user_id}', [UserController::class, 'AddMensuelalaire'])->name('Salaire.Store');
 });
 
 // Route::get('/admin/dashboard', function () {

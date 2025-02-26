@@ -31,4 +31,19 @@ class UserController extends Controller
             return redirect()->back()->with('error', 'Une erreur est survenue lors de la suppression de l\'utilisateur.');
         }
     }
+    public function AddMensuelalaire(Request $request, $user_id)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0',
+            'date_credit' => 'required|date' 
+        ]);
+
+        $user = User::findOrFail($user_id);
+        $user->salaire_mensuel = $request->input('amount');
+        $user->date_credit = $request->input('date_credit'); 
+        $user->save();
+    
+        return back()->with('success', 'Salaire enregistré avec succès.');
+    }
+    
 } 

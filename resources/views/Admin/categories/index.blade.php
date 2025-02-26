@@ -435,19 +435,14 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function editCategory(id, nom) {
-    // Mettre à jour le champ nom
     document.getElementById('editCategoryName').value = nom;
     
-    // Mettre à jour l'ID caché
     document.getElementById('categoryId').value = id;
     
-    // Mettre à jour l'URL du formulaire
     let form = document.getElementById('editCategoryForm');
     let action = form.getAttribute('action');
     form.setAttribute('action', action.replace(':category_id', id));
-    
-    // Afficher le modal (si vous utilisez un modal)
-    // $('#editModal').modal('show');  // Pour Bootstrap
+   
 }
 </script>
 @endsection 
