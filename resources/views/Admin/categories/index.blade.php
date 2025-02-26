@@ -44,31 +44,20 @@
     }
 
     .category-card {
-        background: var(--glass-bg);
+        background: var(--glass-bg, rgba(255, 255, 255, 0.9));
         border-radius: 20px;
         padding: 1.75rem;
         backdrop-filter: blur(10px);
-        border: var(--glass-border);
-        box-shadow: var(--glass-shadow);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
         overflow: hidden;
     }
 
-    .category-card::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.1) 100%);
-        pointer-events: none;
-    }
-
     .category-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
 
     .category-header {
@@ -82,7 +71,7 @@
         width: 56px;
         height: 56px;
         border-radius: 16px;
-        background: var(--primary-gradient);
+        background: linear-gradient(135deg, var(--primary-color, #4F46E5), var(--secondary-color, #7C3AED));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -100,19 +89,19 @@
         left: -100%;
         width: 200%;
         height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
         animation: shimmer 2s infinite;
     }
 
     .category-name {
         font-size: 1.25rem;
         font-weight: 600;
-        color: #1F2937;
+        color: var(--text-primary, #1F2937);
         margin-bottom: 0.5rem;
     }
 
     .category-description {
-        color: #6B7280;
+        color: var(--text-secondary, #6B7280);
         font-size: 0.875rem;
         margin-bottom: 1.5rem;
         line-height: 1.5;
@@ -124,6 +113,7 @@
         gap: 1rem;
         padding-top: 1.5rem;
         border-top: 1px solid rgba(0, 0, 0, 0.05);
+        margin-bottom: 1rem;
     }
 
     .stat-item {
@@ -133,13 +123,27 @@
     .stat-value {
         font-size: 1.5rem;
         font-weight: 700;
-        color: #1F2937;
+        color: var(--text-primary, #1F2937);
         margin-bottom: 0.25rem;
     }
 
     .stat-label {
         font-size: 0.875rem;
-        color: #6B7280;
+        color: var(--text-secondary, #6B7280);
+    }
+
+    .category-footer {
+        padding-top: 0.5rem;
+    }
+
+    .progress {
+        background-color: rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        transition: width 0.6s ease;
     }
 
     .category-actions {
@@ -176,13 +180,13 @@
         justify-content: center;
         cursor: pointer;
         transition: all 0.3s ease;
-        min-height: 300px;
+        text-align: center;
+        padding: 3rem 2rem;
     }
 
     .add-category-card:hover {
         background: rgba(79, 70, 229, 0.1);
         border-color: rgba(79, 70, 229, 0.3);
-        transform: translateY(-5px);
     }
 
     .add-icon {
@@ -194,20 +198,26 @@
         align-items: center;
         justify-content: center;
         font-size: 1.75rem;
-        color: #4F46E5;
+        color: var(--primary-color, #4F46E5);
         margin-bottom: 1rem;
         transition: all 0.3s ease;
     }
 
     .add-category-card:hover .add-icon {
-        background: var(--primary-gradient);
+        background: linear-gradient(135deg, var(--primary-color, #4F46E5), var(--secondary-color, #7C3AED));
         color: white;
     }
 
     .add-text {
         font-size: 1.25rem;
         font-weight: 600;
-        color: #4F46E5;
+        color: var(--primary-color, #4F46E5);
+        margin-bottom: 0.5rem;
+    }
+
+    .add-description {
+        color: var(--text-secondary, #6B7280);
+        font-size: 0.875rem;
     }
 
     .modal-content {
@@ -239,6 +249,15 @@
         box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
     }
 
+    @keyframes shimmer {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+
     @media (max-width: 768px) {
         .categories-grid {
             grid-template-columns: 1fr;
@@ -255,38 +274,48 @@
                 <h2 class="mb-2">Gestion des Catégories</h2>
                 <p class="mb-0">Gérez les catégories de dépenses et de revenus</p>
             </div>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                <i class="fas fa-plus me-2"></i>Nouvelle Catégorie
-            </button>
+         
         </div>
     </div>
 
     <div class="categories-grid">
-        <!-- Category Card -->
+        @foreach($categories as $category)
         <div class="category-card">
             <div class="category-header">
                 <div>
                     <div class="category-icon">
-                        <i class="fas fa-home"></i>
+                        <i class="fas fa-{{ $category->icon ?? 'folder' }}"></i>
                     </div>
-                    <h4 class="category-name">Logement</h4>
-                    <p class="category-description">Dépenses liées au logement, loyer, charges, etc.</p>
+                    <h4 class="category-name">{{ $category->nom }}</h4>
+                    <p class="category-description">
+                        {{ $category->description ?? 'Catégorie de dépenses et revenus' }}
+                    </p>
                 </div>
                 <div class="category-actions">
                     <div class="dropdown">
-                        <button class="action-btn" data-bs-toggle="dropdown">
+                        <button class="action-btn" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-ellipsis-v"></i>
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li>
-                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal">
-                                    <i class="fas fa-edit me-2"></i>Modifier
+                                <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#editCategoryModal" 
+                                   data-category-id="{{ $category->id }}" data-category-name="{{ $category->nom }}"
+                                   onclick="editCategory({{ $category->id }}, '{{ $category->nom }}')">
+                                    <i class="fas fa-edit me-2 text-primary"></i>Modifier
                                 </a>
                             </li>
+                            <li><hr class="dropdown-divider"></li>
                             <li>
-                                <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal">
-                                    <i class="fas fa-trash me-2"></i>Supprimer
-                                </a>
+                                <form action="{{ route('categories.destroy', $category->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                
+                                    <button class="dropdown-item text-danger" type="submit" 
+                                            onclick="if(!confirm('Êtes-vous sûr de vouloir supprimer cette catégorie?')) { event.preventDefault(); }">
+                                        <i class="fas fa-trash-alt me-2"></i>Supprimer
+                                    </button>
+                                </form>
+                                
                             </li>
                         </ul>
                     </div>
@@ -294,49 +323,26 @@
             </div>
             <div class="category-stats">
                 <div class="stat-item">
-                    <div class="stat-value">45</div>
+                    <div class="stat-value">{{ $category->transactions_count ?? 0 }}</div>
                     <div class="stat-label">Transactions</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value">2,500 DH</div>
+                    <div class="stat-value">{{ number_format($category->total_amount ?? 0, 2) }} DH</div>
                     <div class="stat-label">Total</div>
                 </div>
             </div>
-        </div>
-
-        <!-- More Category Cards -->
-        <div class="category-card">
-            <div class="category-header">
-                <div>
-                    <div class="category-icon">
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                    <h4 class="category-name">Alimentation</h4>
-                    <p class="category-description">Dépenses alimentaires, courses, restaurants</p>
-                </div>
-                <div class="category-actions">
-                    <div class="dropdown">
-                        <button class="action-btn" data-bs-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Modifier</a></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Supprimer</a></li>
-                        </ul>
-                    </div>
+            <div class="category-footer">
+                <div class="progress" style="height: 6px;">
+                    <div class="progress-bar bg-primary" role="progressbar" 
+                         style="width: {{ ($category->transactions_count ?? 0) > 0 ? '75' : '0' }}%"></div>
                 </div>
             </div>
-            <div class="category-stats">
-                <div class="stat-item">
-                    <div class="stat-value">78</div>
-                    <div class="stat-label">Transactions</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">1,800 DH</div>
-                    <div class="stat-label">Total</div>
-                </div>
-            </div>
+            <form id="delete-form-{{ $category->id }}" action="{{ route('categories.destroy', $category->id) }}" method="POST" style="display: none;">
+                @csrf
+                @method('DELETE')
+            </form>
         </div>
+        @endforeach
 
         <!-- Add Category Card -->
         <div class="category-card add-category-card" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
@@ -344,6 +350,7 @@
                 <i class="fas fa-plus"></i>
             </div>
             <div class="add-text">Ajouter une Catégorie</div>
+            <p class="add-description">Créer une nouvelle catégorie pour organiser vos transactions</p>
         </div>
     </div>
 </div>
@@ -357,41 +364,90 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{{ route('categories.store') }}" method="POST" id="addCategoryForm">
+                    @csrf
                     <div class="mb-3">
                         <label class="form-label">Nom de la catégorie</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Icône</label>
-                        <select class="form-select">
-                            <option value="home">Maison</option>
-                            <option value="utensils">Alimentation</option>
-                            <option value="car">Transport</option>
-                            <option value="shopping-bag">Shopping</option>
-                            <option value="heartbeat">Santé</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <textarea class="form-control" rows="3"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Type</label>
-                        <select class="form-select">
-                            <option>Dépense</option>
-                            <option>Revenu</option>
-                        </select>
+                        <input type="text" class="form-control" name="nom" required>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary">Créer</button>
+                <button type="submit" form="addCategoryForm" class="btn btn-primary">Créer</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Edit & Delete Modals (similar structure to Add Modal) -->
+<!-- Edit Category Modal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modifier la Catégorie</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('categories.edit', ':category_id') }}" method="POST" id="editCategoryForm">
+                    @csrf
+                    @method('PUT')
+                    <div class="mb-3">
+                        <label class="form-label">Nom de la catégorie</label>
+                        <input type="text" class="form-control" name="nom" id="editCategoryName" required>
+                        <input type="hidden" id="categoryId" name="category_id">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" form="editCategoryForm" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const editModal = document.getElementById('editCategoryModal');
+    if (editModal) {
+        editModal.addEventListener('show.bs.modal', function(event) {
+            // Button that triggered the modal
+            const button = event.relatedTarget;
+            
+            // Extract info from data-* attributes
+            const categoryId = button.getAttribute('data-category-id');
+            const categoryName = button.getAttribute('data-category-name');
+            
+            // Update the modal's content
+            const modalTitle = editModal.querySelector('.modal-title');
+            const categoryInput = editModal.querySelector('#editCategoryName');
+            const form = editModal.querySelector('#editCategoryForm');
+            
+            modalTitle.textContent = 'Modifier la Catégorie';
+            categoryInput.value = categoryName;
+            form.action = `/categories/${categoryId}`;
+        });
+    }
+});
+
+function editCategory(id, nom) {
+    // Mettre à jour le champ nom
+    document.getElementById('editCategoryName').value = nom;
+    
+    // Mettre à jour l'ID caché
+    document.getElementById('categoryId').value = id;
+    
+    // Mettre à jour l'URL du formulaire
+    let form = document.getElementById('editCategoryForm');
+    let action = form.getAttribute('action');
+    form.setAttribute('action', action.replace(':category_id', id));
+    
+    // Afficher le modal (si vous utilisez un modal)
+    // $('#editModal').modal('show');  // Pour Bootstrap
+}
+</script>
 @endsection 

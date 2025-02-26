@@ -4,12 +4,17 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategorieController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
 use App\Http\Middleware\CheckIfUser;
 
 
 Route::get('/', [HomeController::class, 'redirect'])->name('dashboard');
+
+
+Route::resource('categories', CategorieController::class);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -20,9 +25,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['auth', CheckIfAdmin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/users', [AdminController::class, 'users'])->name('admin.users');
-    Route::get('/admin/categories', [AdminController::class, 'categories'])->name('admin.categories');
+    Route::get('/admin/categories', [CategorieController::class, 'index'])->name('admin.categories');
     Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
-    Route::get('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::resource('categories', CategorieController::class);
 });
 
 
