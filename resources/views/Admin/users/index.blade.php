@@ -347,14 +347,16 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
+                
                 <tbody>
+                    @foreach($users as $user)
                     <tr>
                         <td>
                             <div class="user-info">
                                 <img src="https://ui-avatars.com/api/?name=Ahmed+Alami" alt="User" class="user-avatar">
                                 <div class="user-details">
-                                    <div class="user-name">Ahmed Alami</div>
-                                    <div class="user-email">ahmed.alami@example.com</div>
+                                    <div class="user-name">{{$user->name}}</div>
+                                    <div class="user-email">{{$user->email}}</div>
                                 </div>
                             </div>
                         </td>
@@ -377,7 +379,8 @@
                             </div>
                         </td>
                     </tr>
-                    <!-- Add more user rows here -->
+                
+                    @endforeach
                 </tbody>
             </table>
         </div>
