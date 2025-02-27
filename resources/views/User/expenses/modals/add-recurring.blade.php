@@ -1,4 +1,4 @@
-<!-- Modal Ajout Dépense Récurrente -->
+<!-- Modal Ajout Dépense -->
 <div class="modal fade" id="addRecurringModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -7,104 +7,111 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-                <form id="addRecurringForm">
+                <form id="addRecurringForm" action="{{ route('DepenseRecurrentes.store') }}" method="POST">
+                    @csrf
+                
+                    <!-- Nom de la dépense -->
+                    <div class="mb-3">
+                        <label class="form-label">Nom de la dépense</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-pen"></i></span>
+                            <input type="text" name="nom" class="form-control" placeholder="Ex: Abonnement Netflix" required>
+                        </div>
+                    </div>
+                
+                    <!-- montant -->
                     <div class="mb-3">
                         <label class="form-label">Montant (DH)</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-money-bill"></i></span>
-                            <input type="number" class="form-control" required min="0" step="0.01">
+                            <input type="number" name="montant" class="form-control" required min="0" step="0.01">
                         </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Description</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-align-left"></i></span>
-                            <input type="text" class="form-control" required>
-                        </div>
-                    </div>
-
+                
+                    <!-- Catégorie (choisie parmi celles ajoutées par l'admin) -->
                     <div class="mb-3">
                         <label class="form-label">Catégorie</label>
                         <div class="input-group">
                             <span class="input-group-text"><i class="fas fa-tags"></i></span>
-                            <select class="form-select" required>
+                            <select name="categorie_id" class="form-select" required>
                                 <option value="">Sélectionner une catégorie</option>
-                                <option value="logement">Logement</option>
-                                <option value="transport">Transport</option>
-                                <option value="services">Services</option>
-                                <option value="abonnements">Abonnements</option>
-                                <option value="autres">Autres</option>
+                                @foreach ($categories as $categorie)
+                                    <option value="{{ $categorie->id }}">{{ $categorie->nom }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Fréquence</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-sync"></i></span>
-                            <select class="form-select" required id="frequencySelect">
-                                <option value="">Sélectionner une fréquence</option>
-                                <option value="mensuel">Mensuel</option>
-                                <option value="hebdomadaire">Hebdomadaire</option>
-                                <option value="trimestriel">Trimestriel</option>
-                                <option value="annuel">Annuel</option>
-                            </select>
+                
+                        <!-- Date -->
+                        <div class="mb-3">
+                            <label for="date_extraction_salaire">Date de l'extraction du salaire</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-money-bill"></i></span>
+                                <input type="date" name="date_extraction_salaire" id="date_extraction_salaire" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3" id="monthlyOptions">
-                        <label class="form-label">Jour du mois</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-calendar-day"></i></span>
-                            <select class="form-select">
-                                @for($i = 1; $i <= 31; $i++)
-                                    <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <label class="form-label">Mode de paiement</label>
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
-                            <select class="form-select" required>
-                                <option value="">Sélectionner un mode de paiement</option>
-                                <option value="prelevement">Prélèvement automatique</option>
-                                <option value="virement">Virement permanent</option>
-                                <option value="carte">Carte bancaire</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="enableNotifications" checked>
-                            <label class="form-check-label" for="enableNotifications">
-                                Activer les notifications
-                            </label>
-                        </div>
+                    <!-- Boutons -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i> Enregistrer
+                        </button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="submit" form="addRecurringForm" class="btn btn-primary">
-                    <i class="fas fa-save me-2"></i>Enregistrer
-                </button>
+                
+                
             </div>
         </div>
     </div>
 </div>
 
+<style>
+.modal-content {
+    border-radius: 1rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    border-radius: 1rem 1rem 0 0;
+    padding: 1.5rem;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.input-group-text {
+    background: var(--light-color);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-control, .form-select {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
+}
+
+.modal-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+</style>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const frequencySelect = document.getElementById('frequencySelect');
-    const monthlyOptions = document.getElementById('monthlyOptions');
+    const addReceipt = document.getElementById('addReceipt');
+    const receiptUpload = document.getElementById('receiptUpload');
 
-    frequencySelect?.addEventListener('change', function() {
-        monthlyOptions.classList.toggle('d-none', this.value !== 'mensuel');
+    addReceipt?.addEventListener('change', function() {
+        receiptUpload.classList.toggle('d-none', !this.checked);
     });
 });
 </script> 

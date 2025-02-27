@@ -17,7 +17,7 @@ class DepenseController extends Controller
         $Depenses = Depense::with('categorie')
         ->where('user_id', auth()->id()) 
         ->get();
- 
+
        
         return view('User.expenses.index',[
             "categories"=> $categories,
@@ -51,7 +51,8 @@ class DepenseController extends Controller
             'categorie_id' => $request->categorie_id,
             'user_id' => auth()->user()->id
         ]);
-        return redirect()->route('depenses.index');
+
+        return redirect()->route('user.expense');
 
 
     }

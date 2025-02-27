@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\DepenseRecurrenteController;
 use App\Http\Controllers\DepenseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
@@ -16,6 +17,7 @@ Route::get('/', [HomeController::class, 'redirect'])->name('dashboard');
 
 Route::resource('categories', CategorieController::class);
 Route::resource('depenses', DepenseController::class);
+Route::resource('DepenseRecurrentes', DepenseRecurrenteController::class);
 
 
 Route::middleware('auth')->group(function () {

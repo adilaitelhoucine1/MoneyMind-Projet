@@ -17,8 +17,7 @@ return new class extends Migration
             $table->foreignId('categorie_id')->constrained()->onDelete('cascade');
             $table->string('nom');
             $table->decimal('montant', 10, 2);
-            $table->enum('frequence', ['quotidien', 'hebdomadaire', 'mensuel', 'annuel']);
-            $table->date('date_debut');
+            $table->date('date_extraction_salaire');
             $table->timestamps();
         });
     }

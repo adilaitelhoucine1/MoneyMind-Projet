@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\Depense;
+use App\Models\DepenseRecurrente;
 
 class UserController extends Controller
 {
@@ -51,7 +53,17 @@ class UserController extends Controller
     }
     public function Showexpense(){
         $categories= DB::table('categories')->distinct()->get();
-        return view('User.expenses.index',["categories"=> $categories]);
+        $Depenses = Depense::with('categorie')
+        ->where('user_id', auth()->id()) 
+        ->get();
+        $DepensesRecurrente = DepenseRecurrente::with('categorie')
+        ->where('user_id', auth()->id()) 
+        ->get();
+        return view('User.expenses.index',[
+        "categories"=> $categories,
+        "Depenses"=> $Depenses,
+        "DepensesRecurrente"=> $DepensesRecurrente
+    ]);
 
     }
     
