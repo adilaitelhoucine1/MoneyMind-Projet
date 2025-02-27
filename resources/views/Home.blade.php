@@ -645,15 +645,41 @@
             <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
                 <h1 class="text-2xl font-bold"><span class="text-reveal">Money<span class="text-gray-800">Mind</span></span></h1>
                 <div class="flex items-center space-x-4">
-                    <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-lg border border-emerald-500 text-emerald-600 hover:text-white font-medium transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
-                        <i class="fas fa-sign-in-alt text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
-                        <span>Connexion</span>
-                    </a>
-                    
-                    <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-lg border border-emerald-500 text-emerald-600 hover:text-white font-medium transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
-                        <i class="fas fa-user-plus  text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
-                        <span>Inscription</span>
-                    </a>
+                    @if (Route::has('login'))
+                    @auth
+                        @php
+                            $dashboardRoute = auth()->user()->role === 'admin' ? route('admin.dashboard') : 
+                                              (auth()->user()->role === 'user' ? route('user.dashboard') : route('dashboard'));
+                        @endphp
+                
+                        <a href="{{ $dashboardRoute }}" class="px-5 py-2.5 rounded-lg border border-emerald-500 text-emerald-600 hover:text-white font-medium transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
+                            <i class="fas fa-tachometer-alt text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
+                            <span>Dashboard</span>
+                        </a>
+
+                        <form method="get" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" class="px-5 py-2.5 rounded-lg border border-red-500 text-red-600 hover:text-white font-medium transition-all duration-300 hover:bg-red-500 hover:shadow-lg hover:shadow-red-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
+                                <i class="fas fa-sign-out-alt text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
+                                <span>Déconnexion</span>
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="px-5 py-2.5 rounded-lg border border-emerald-500 text-emerald-600 hover:text-white font-medium transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
+                            <i class="fas fa-sign-in-alt text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
+                            <span>Connexion</span>
+                        </a>
+                
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="px-5 py-2.5 rounded-lg border border-emerald-500 text-emerald-600 hover:text-white font-medium transition-all duration-300 hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-500/30 flex items-center space-x-2 group shine-effect nav-btn-animate hover-scale">
+                                <i class="fas fa-user-plus text-lg transition-transform duration-300 group-hover:translate-x-1"></i>
+                                <span>Inscription</span>
+                            </a>
+                        @endif
+                    @endauth
+                @endif
+                
+                
            
                 </div>
             </nav>

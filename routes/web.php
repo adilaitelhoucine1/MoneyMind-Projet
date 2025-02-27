@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\DepenseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
 use App\Http\Middleware\CheckIfUser;
@@ -14,6 +15,7 @@ Route::get('/', [HomeController::class, 'redirect'])->name('dashboard');
 
 
 Route::resource('categories', CategorieController::class);
+Route::resource('depenses', DepenseController::class);
 
 
 Route::middleware('auth')->group(function () {
@@ -31,10 +33,11 @@ Route::middleware(['auth', CheckIfAdmin::class])->group(function () {
 });
 
 
-Route::middleware(['auth', CheckIfUser::class])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/User/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
     Route::get('/User/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
     Route::post('/User/salary/update/{user_id}', [UserController::class, 'AddMensuelalaire'])->name('Salaire.Store');
+    Route::get('/expenses/index', [UserController::class, 'Showexpense'])->name('user.expense');
 });
 
 // Route::get('/admin/dashboard', function () {

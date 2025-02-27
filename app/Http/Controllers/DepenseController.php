@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\Depense;
+
 
 class DepenseController extends Controller
 {
@@ -11,7 +13,17 @@ class DepenseController extends Controller
      */
     public function index()
     {
-        //
+        $categories= DB::table('categories')->distinct()->get();
+        $Depenses = Depense::with('categorie')
+        ->where('user_id', auth()->id()) 
+        ->get();
+ 
+       
+        return view('User.expenses.index',[
+            "categories"=> $categories,
+            "Depenses"=> $Depenses
+    
+    ]);
     }
 
     /**
@@ -27,7 +39,21 @@ class DepenseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'prix' => 'required|numeric|min:0',
+            'categorie_id' => 'required|exists:categories,id'
+        ]);
+
+        Depense::create([
+            'nom' => $request->nom,
+            'prix' => $request->prix,
+            'categorie_id' => $request->categorie_id,
+            'user_id' => auth()->user()->id
+        ]);
+        return redirect()->route('depenses.index');
+
+
     }
 
     /**
@@ -35,7 +61,7 @@ class DepenseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
@@ -43,7 +69,7 @@ class DepenseController extends Controller
      */
     public function edit(string $id)
     {
-        //
+    
     }
 
     /**
@@ -51,14 +77,30 @@ class DepenseController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'prix' => 'required|numeric',
+            'categorie_id' => 'required|exists:categories,id',
+        ]);
+    
+        $depense = Depense::findOrFail($id);
+        $depense->update([
+            'nom' => $request->nom,
+            'prix' => $request->prix,
+            'categorie_id' => $request->categorie_id,
+        ]);
+    
+        return redirect()->route('depenses.index');    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $depense = Depense::findOrFail($id);
+        $depense->delete();
+    
+        return redirect()->back();
     }
+    
 }

@@ -585,128 +585,224 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="dashboard-header">
-        <h2 class="mb-2">Bienvenue, {{ Auth::user()->name }}!</h2>
-        <p class="mb-4">Voici un aperçu de vos statistiques financières</p>
-        <div class="d-flex gap-3">
-            <button class="btn btn-light">
-                <i class="fas fa-download me-2"></i>Télécharger le rapport
-                                </button>
-            <button class="btn btn-light">
-                <i class="fas fa-share me-2"></i>Partager
-                                </button>
-                            </div>
+    <div class="admin-welcome-card">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h2 class="mb-2">Tableau de Bord Administrateur</h2>
+                <p class="mb-4">Gérez et surveillez l'activité de la plateforme MoneyMind</p>
+                <div class="d-flex gap-2">
+                    <a href="" class="btn btn-light">
+                        <i class="fas fa-receipt me-2"></i>Dépenses
+                    </a>
+                    <a href="" class="btn btn-outline-light">
+                        <i class="fas fa-sync me-2"></i>Dépenses Récurrentes
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques Principales -->
+    <div class="row g-4">
+        <div class="col-md-3">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon users">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="admin-stat-value">1,254</div>
+                <div class="admin-stat-label">Utilisateurs Totaux</div>
+                <div class="admin-stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i> 12% ce mois
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon revenue">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="admin-stat-value">3,850 DH</div>
+                <div class="admin-stat-label">Revenu Mensuel Moyen</div>
+                <div class="admin-stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i> 5% ce mois
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon expense">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <div class="admin-stat-value">245,670 DH</div>
+                <div class="admin-stat-label">Dépenses Totales</div>
+                <div class="admin-stat-change negative">
+                    <i class="fas fa-arrow-up me-1"></i> 8% ce mois
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="admin-stat-card">
+                <div class="admin-stat-icon savings">
+                    <i class="fas fa-piggy-bank"></i>
+                </div>
+                <div class="admin-stat-value">89,450 DH</div>
+                <div class="admin-stat-label">Épargne Totale</div>
+                <div class="admin-stat-change positive">
+                    <i class="fas fa-arrow-up me-1"></i> 15% ce mois
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Graphique des Dépenses -->
+        <div class="col-lg-8">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <h5 class="admin-panel-title">
+                        <i class="fas fa-chart-line me-2"></i>
+                        Évolution des Dépenses
+                    </h5>
+                    <div class="admin-panel-actions">
+                        <select class="form-select form-select-sm">
+                            <option>7 derniers jours</option>
+                            <option>30 derniers jours</option>
+                            <option>3 derniers mois</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="admin-panel-body">
+                    <canvas id="expensesChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribution des Utilisateurs -->
+        <div class="col-lg-4">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <h5 class="admin-panel-title">
+                        <i class="fas fa-chart-pie me-2"></i>
+                        Distribution des Utilisateurs
+                    </h5>
+                </div>
+                <div class="admin-panel-body">
+                    <canvas id="userDistributionChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Dernières Activités -->
+        <div class="col-lg-6">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <h5 class="admin-panel-title">
+                        <i class="fas fa-history me-2"></i>
+                        Dernières Activités
+                    </h5>
+                </div>
+                <div class="activity-list">
+                    <div class="activity-item">
+                        <div class="activity-icon bg-primary">
+                            <i class="fas fa-user-plus"></i>
                         </div>
-                        
-    <div class="quick-stats">
-        <div class="stat-card">
-            <div class="stat-icon users">
-                <i class="fas fa-users"></i>
-                            </div>
-            <div class="stat-value">1,254</div>
-            <div class="stat-label">Utilisateurs actifs</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up me-1"></i>12% ce mois
-            </div>
-        </div>
-        
-        <div class="stat-card">
-            <div class="stat-icon revenue">
-                <i class="fas fa-wallet"></i>
-                </div>
-            <div class="stat-value">45,650 DH</div>
-            <div class="stat-label">Revenu total</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up me-1"></i>8% ce mois
-                </div>
-            </div>
-            
-        <div class="stat-card">
-            <div class="stat-icon expenses">
-                <i class="fas fa-shopping-cart"></i>
-                </div>
-            <div class="stat-value">28,320 DH</div>
-            <div class="stat-label">Dépenses totales</div>
-            <div class="stat-change negative">
-                <i class="fas fa-arrow-up me-1"></i>5% ce mois
-    </div>
-</div>
-
-        <div class="stat-card">
-            <div class="stat-icon growth">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <div class="stat-value">17,330 DH</div>
-            <div class="stat-label">Économies</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up me-1"></i>15% ce mois
-        </div>
-    </div>
-</div>
-
-    <div class="dashboard-grid">
-        <div class="chart-card">
-            <div class="chart-header">
-                <h5 class="chart-title">Aperçu des dépenses</h5>
-                <div class="chart-actions">
-                    <select class="period-selector">
-                        <option>Cette semaine</option>
-                        <option>Ce mois</option>
-                        <option>Cette année</option>
-                    </select>
-            </div>
-            </div>
-            <div style="height: 300px;">
-                <canvas id="expensesChart"></canvas>
-    </div>
-</div>
-
-        <div class="chart-card">
-            <div class="chart-header">
-                <h5 class="chart-title">Activités récentes</h5>
-            </div>
-            <div class="activity-list">
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: var(--primary-gradient)">
-                        <i class="fas fa-user"></i>
+                        <div class="activity-details">
+                            <div class="activity-title">Nouvel Utilisateur</div>
+                            <div class="activity-subtitle">Ahmed Alami s'est inscrit</div>
+                            <div class="activity-time">Il y a 5 minutes</div>
+                        </div>
                     </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Nouvel utilisateur inscrit</div>
-                        <div class="activity-time">Il y a 2 heures</div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-success">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">Objectif Atteint</div>
+                            <div class="activity-subtitle">Sara B. a atteint son objectif d'épargne</div>
+                            <div class="activity-time">Il y a 2 heures</div>
+                        </div>
                     </div>
+                    <div class="activity-item">
+                        <div class="activity-icon bg-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="activity-details">
+                            <div class="activity-title">Alerte Budget</div>
+                            <div class="activity-subtitle">3 utilisateurs ont dépassé leur budget</div>
+                            <div class="activity-time">Il y a 4 heures</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-                <div class="activity-item">
-                    <div class="activity-icon" style="background: var(--success-gradient)">
-                        <i class="fas fa-money-bill"></i>
+        </div>
+
+        <!-- Top Catégories -->
+        <div class="col-lg-6">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <h5 class="admin-panel-title">
+                        <i class="fas fa-tags me-2"></i>
+                        Top Catégories
+                    </h5>
+                </div>
+                <div class="category-stats">
+                    <div class="category-stat-item">
+                        <div class="category-info">
+                            <div class="category-name">Logement</div>
+                            <div class="category-value">85,450 DH</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 75%" role="progressbar"></div>
+                        </div>
+                    </div>
+                    <div class="category-stat-item">
+                        <div class="category-info">
+                            <div class="category-name">Alimentation</div>
+                            <div class="category-value">45,230 DH</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 60%" role="progressbar"></div>
+                        </div>
+                    </div>
+                    <div class="category-stat-item">
+                        <div class="category-info">
+                            <div class="category-name">Transport</div>
+                            <div class="category-value">32,150 DH</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 45%" role="progressbar"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-                    <div class="activity-content">
-                        <div class="activity-title">Nouvelle transaction</div>
-                        <div class="activity-time">Il y a 4 heures</div>
         </div>
     </div>
-                <!-- Add more activity items -->
 </div>
-            </div>
-    </div>
-</div>
+
 @endsection
 
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Initialize your charts here
-    const ctx = document.getElementById('expensesChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'line',
+    document.addEventListener('DOMContentLoaded', function() {
+        // Graphique des dépenses
+        const expensesCtx = document.getElementById('expensesChart').getContext('2d');
+        new Chart(expensesCtx, {
+            type: 'line',
             data: {
-            labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
+                labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'],
                 datasets: [{
-                label: 'Dépenses',
-                data: [1200, 1900, 1500, 2100, 1800, 2500, 2200],
-                borderColor: '#4F46E5',
-                backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                tension: 0.4,
-                fill: true
+                    label: 'Dépenses Totales',
+                    data: [12500, 15000, 10000, 22000, 18000, 25000, 20000],
+                    borderColor: '#4F46E5',
+                    backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                    tension: 0.4,
+                    fill: true
                 }]
             },
             options: {
@@ -717,21 +813,46 @@
                         display: false
                     }
                 },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    grid: {
-                        display: true,
-                        drawBorder: false
-                    }
-                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            display: true,
+                            drawBorder: false
+                        }
+                    },
                     x: {
                         grid: {
                             display: false
                         }
+                    }
                 }
             }
-        }
+        });
+
+        // Distribution des utilisateurs
+        const userDistributionCtx = document.getElementById('userDistributionChart').getContext('2d');
+        new Chart(userDistributionCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Actifs', 'Occasionnels', 'Inactifs'],
+                datasets: [{
+                    data: [65, 25, 10],
+                    backgroundColor: ['#4F46E5', '#10B981', '#EF4444'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
     });
 </script>
 @endsection

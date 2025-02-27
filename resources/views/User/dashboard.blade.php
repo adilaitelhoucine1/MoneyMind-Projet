@@ -467,11 +467,11 @@
                         <div class="mb-3">
                             <label class="form-label">Catégorie</label>
                             <select class="form-select" name="category_id" required>
-                                <option value="1">Logement</option>
-                                <option value="2">Alimentation</option>
-                                <option value="3">Transport</option>
-                                <option value="4">Loisirs</option>
-                                <option value="5">Factures</option>
+                                @foreach($categories as $category)
+                                
+                                <option value="{{$category->id}}">{{$category->nom}}</option>
+                                @endforeach
+                              
                             </select>
                         </div>
                         <div class="mb-3">
@@ -552,7 +552,7 @@
     <!-- Main Dashboard Content -->
     <div class="dashboard-header">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h2 class="mb-0">Bonjour, John Doe! 👋</h2>
+            <h2 class="mb-0 capitalize">Bonjour, {{Auth::user()->name}} 👋</h2>
             <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#salaryModal">
                 <i class="fas fa-edit me-2"></i>Gérer Salaire
             </button>

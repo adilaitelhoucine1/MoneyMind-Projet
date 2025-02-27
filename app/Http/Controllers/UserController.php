@@ -5,12 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
     public function UserDashboard()
     {
-        return view('User.dashboard');  
+        $categories= DB::table('categories')->distinct()->get();
+
+        return view('User.dashboard',["categories"=>$categories]);
+     
     }
 
 
@@ -44,6 +48,11 @@ class UserController extends Controller
         $user->save();
     
         return back()->with('success', 'Salaire enregistré avec succès.');
+    }
+    public function Showexpense(){
+        $categories= DB::table('categories')->distinct()->get();
+        return view('User.expenses.index',["categories"=> $categories]);
+
     }
     
 } 
