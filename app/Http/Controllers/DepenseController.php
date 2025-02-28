@@ -91,7 +91,8 @@ class DepenseController extends Controller
             'categorie_id' => $request->categorie_id,
         ]);
     
-        return redirect()->route('depenses.index');    }
+        return redirect()->route('user.expense');  
+      }
 
     /**
      * Remove the specified resource from storage.

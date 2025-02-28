@@ -134,7 +134,7 @@
     }
     
     .admin-stat-value {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 800;
         margin-bottom: 0.75rem;
         background: var(--primary-gradient);
@@ -609,7 +609,7 @@
                 <div class="admin-stat-icon users">
                     <i class="fas fa-users"></i>
                 </div>
-                <div class="admin-stat-value">1,254</div>
+                <div class="admin-stat-value">{{$TotalUsers}}</div>
                 <div class="admin-stat-label">Utilisateurs Totaux</div>
                 <div class="admin-stat-change positive">
                     <i class="fas fa-arrow-up me-1"></i> 12% ce mois
@@ -622,7 +622,7 @@
                 <div class="admin-stat-icon revenue">
                     <i class="fas fa-money-bill-wave"></i>
                 </div>
-                <div class="admin-stat-value">3,850 DH</div>
+                <div class="admin-stat-value">{{$RevenuMensuelMoyen}} DH</div>
                 <div class="admin-stat-label">Revenu Mensuel Moyen</div>
                 <div class="admin-stat-change positive">
                     <i class="fas fa-arrow-up me-1"></i> 5% ce mois
@@ -635,7 +635,7 @@
                 <div class="admin-stat-icon expense">
                     <i class="fas fa-shopping-cart"></i>
                 </div>
-                <div class="admin-stat-value">245,670 DH</div>
+                <div class="admin-stat-value">{{$TotalDepenses}} DH</div>
                 <div class="admin-stat-label">Dépenses Totales</div>
                 <div class="admin-stat-change negative">
                     <i class="fas fa-arrow-up me-1"></i> 8% ce mois

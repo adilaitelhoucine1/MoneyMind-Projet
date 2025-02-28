@@ -29,7 +29,7 @@
                         <i class="fas fa-wallet"></i>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-value">4,570 DH</div>
+                        <div class="stat-value">{{$totalDepenses}} DH</div>
                         <div class="stat-label">Dépenses ce mois</div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                         <i class="fas fa-sync"></i>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-value">2,850 DH</div>
+                        <div class="stat-value">{{$totalDepensesRecurrente}} DH</div>
                         <div class="stat-label">Dépenses Récurrentes</div>
                     </div>
                 </div>
@@ -65,12 +65,12 @@
                         <i class="fas fa-chart-pie"></i>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-value">8</div>
+                        <div class="stat-value">{{$categoryCount}}</div>
                         <div class="stat-label">Catégories Actives</div>
                     </div>
                 </div>
                 <div class="stat-footer">
-                    <span class="text-primary">Gérer les catégories</span>
+                    <span class="text-primary"></span>
                 </div>
             </div>
         </div>

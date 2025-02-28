@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('role', ['admin','user'])->default('user');
             $table->timestamp('last_logged_in')->nullable();
             $table->decimal('salaire_mensuel', 10, 2)->nullable();
+            $table->decimal('Budjet', 10, 2)->nullable();
             $table->date('date_credit')->nullable();
             $table->rememberToken();
             $table->timestamps();

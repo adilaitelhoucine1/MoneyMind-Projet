@@ -11,7 +11,7 @@ use Illuminate\Console\Command;
 class AddSalary extends Command
 {
     protected $signature = 'salary:add';
-    protected $description = 'Ajoute le salaire mensuel aux utilisateurs le jour défini (par exemple, le 10 de chaque mois)';
+    protected $description = 'Ajoute le salaire mensuel aux utilisateurs';
 
     public function __construct()
     {
@@ -21,22 +21,24 @@ class AddSalary extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
-    {
-        $today = Carbon::now();
-        
-        if ($today->day == Carbon::parse(Auth::user()->date_credit)->format('d')) {
-            $users = User::whereNotNull('salaire_mensuel')->get();  
 
-            foreach ($users as $user) {
-             
-                $user->salaire_mensuel += $user->salaire_mensuel; 
-                $user->save();
-            }
+     public function handle()
+     {
+         $today = Carbon::now()->day; 
+ 
+         $users = User::whereNotNull('salaire_mensuel')
+                      ->whereNotNull('date_credit')
+                      ->get();
 
-            $this->info('Salaire ajouté avec succès à tous les utilisateurs.');
-        } else {
-            $this->info("Aujourd'hui n'est pas le 10, pas de salaire ajouté.");
-        }
-    }
+
+         foreach ($users as $user) {
+             if ($today == 28) {
+                 $user->Budjet+=$user->salaire_mensuel;
+                 $user->save();
+                 $this->info("Salaire ajouté pour : {$user->name}");
+             }
+         }
+ 
+         $this->info('✅ Traitement terminé.');
+     }
 }
