@@ -90,6 +90,7 @@ class DepenseRecurrenteController extends Controller
     public function destroy($id)
     {
         $DepenseRecurrente = DepenseRecurrente::findOrFail($id);
+
         $DepenseRecurrente->delete();
     
         return redirect()->back();

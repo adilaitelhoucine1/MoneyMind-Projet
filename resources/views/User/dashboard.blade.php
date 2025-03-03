@@ -996,7 +996,7 @@
                         <i class="fas fa-chart-pie"></i>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-value">8,500 DH</div>
+                        <div class="stat-value">{{$BudjetRestant}} DH</div>
                         <div class="stat-label">Budget Restant</div>
                         <div class="budget-progress">
                             <div class="budget-progress-bar" role="progressbar" style="width: 65%"></div>
@@ -1048,7 +1048,7 @@
                         <i class="fas fa-coins"></i>
                     </div>
                     <div class="stat-info">
-                        <div class="stat-value">15,000 DH</div>
+                        <div class="stat-value">{{$budjet}} DH</div>
                         <div class="stat-label">Budget Total</div>
                         <div class="stat-meta">
                             <i class="fas fa-chart-line"></i>
@@ -1145,12 +1145,12 @@
                 <div class="chart-header">
                     <h5 class="chart-title">Répartition des Dépenses</h5>
                     <div>
-                        <button class="btn btn-custom btn-sm me-2" data-bs-toggle="modal" data-bs-target="#alertsModal">
+                        {{-- <button class="btn btn-custom btn-sm me-2" data-bs-toggle="modal" data-bs-target="#alertsModal">
                             <i class="fas fa-bell me-2"></i>Alertes
                         </button>
                         <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#expenseModal">
                             <i class="fas fa-plus me-2"></i>Ajouter
-                        </button>
+                        </button> --}}
                     </div>
                 </div>
                 <canvas id="expenseChart" height="300"></canvas>
@@ -1314,8 +1314,11 @@
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
+    let repartitionDepense = @json($repartitionDepense);
+  //  console.log(repartitionDepense); 
+
     document.addEventListener('DOMContentLoaded', function() {
-        // Toggle recurring expense options
         const isRecurringCheckbox = document.getElementById('isRecurring');
         const recurringOptions = document.getElementById('recurringOptions');
         
@@ -1323,7 +1326,6 @@
             recurringOptions.classList.toggle('d-none', !this.checked);
         });
 
-        // Toggle side hustle options
         const hasSideHustleCheckbox = document.getElementById('hasSideHustle');
         const sideHustleOptions = document.getElementById('sideHustleOptions');
         
@@ -1331,11 +1333,10 @@
             sideHustleOptions.classList.toggle('d-none', !this.checked);
         });
 
-        // Expense Chart
         const expenseCtx = document.getElementById('expenseChart').getContext('2d');
         const expenseData = {
-            labels: ['Logement', 'Alimentation', 'Transport', 'Loisirs', 'Factures'],
-            data: [3000, 2000, 800, 500, 700],
+            labels: Object.keys(repartitionDepense),
+            data: Object.values(repartitionDepense),
             colors: [
                 'rgba(99, 102, 241, 0.8)',
                 'rgba(16, 185, 129, 0.8)',
@@ -1399,7 +1400,7 @@
                         callbacks: {
                             label: function(context) {
                                 let value = context.raw;
-                                return context.label + ': ' + value + ' DH';
+                                return context.label + ': ' + value.toFixed(2) + ' DH';
                             }
                         }
                     }

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\Depense;
+use App\Models\Categorie;
 use App\Models\DepenseRecurrente;
 
 class UserController extends Controller
@@ -15,6 +16,7 @@ class UserController extends Controller
     
     public function UserDashboard()
     {
+
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
         $categories= DB::table('categories')->distinct()->get();
@@ -25,9 +27,50 @@ class UserController extends Controller
         ->sum('montant');
         $categoryCount= DB::table('categories')->count();
         $TotalAllDepenses=$totalDepenses+$totalDepensesRecurrente;
+        $budget = User::where('id', Auth::user()->id)->value('Budjet');
+        $BudjetRestant=$budget-$TotalAllDepenses;
+
+        $repartitionDepense = DB::table('depenses')
+            ->select('categories.nom', DB::raw('SUM(depenses.prix) as total'))
+            ->join('categories', 'depenses.categorie_id', '=', 'categories.id')
+            ->where('depenses.user_id', Auth::id())
+            ->whereMonth('depenses.created_at', $currentMonth)
+            ->whereYear('depenses.created_at', $currentYear)
+            ->groupBy('categories.nom')
+            ->get();
+
+        $repartitionRecurrente = DB::table('depenses_recurrentes')
+            ->select('categories.nom', DB::raw('SUM(depenses_recurrentes.montant) as total'))
+            ->join('categories', 'depenses_recurrentes.categorie_id', '=', 'categories.id')
+            ->where('depenses_recurrentes.user_id', Auth::id())
+            ->whereMonth('depenses_recurrentes.created_at', $currentMonth)
+            ->whereYear('depenses_recurrentes.created_at', $currentYear)
+            ->groupBy('categories.nom')
+            ->get();
+
+        
+        $repartitionDepense = $repartitionDepense->concat($repartitionRecurrente)
+            ->groupBy('nom');
+
+        $repartitionFinale = [];
+        foreach ($repartitionDepense as $nom => $items) {
+            $repartitionFinale[$nom] = $items->sum('total');
+        }
+
+        $categories = Categorie::select('nom')->get();
+
+        //dd($repartition);
+
+
+
         return view('User.dashboard',[
             "categories"=>$categories,
-            "TotalAllDepenses"=>$TotalAllDepenses
+            "TotalAllDepenses"=>$TotalAllDepenses,
+            "budjet"=>$budget,
+            "BudjetRestant"=>$BudjetRestant,
+            "repartitionDepense"=>$repartitionFinale,
+            "categories"=>$categories,
+            
         ]);
      
     }
