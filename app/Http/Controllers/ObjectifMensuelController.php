@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ObjectifMensuel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ObjectifMensuelController extends Controller
 {
@@ -11,7 +13,8 @@ class ObjectifMensuelController extends Controller
      */
     public function index()
     {
-        //
+        $objectifs = ObjectifMensuel::where('user_id', Auth::id())->get();
+        return view('objectifs.index', compact('objectifs'));
     }
 
     /**
@@ -27,7 +30,40 @@ class ObjectifMensuelController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            \Log::info('Received request data:', $request->all());
+            
+            $validated = $request->validate([
+                'nom' => 'required|string|max:255',
+                'montant' => 'required|numeric|min:0',
+                'date_objectif' => 'required|date|after:today'
+            ]);
+            
+            \Log::info('Validated data:', $validated);
+            \Log::info('User ID:', ['user_id' => auth()->id()]);
+
+            if (!auth()->check()) {
+                throw new \Exception('User not authenticated');
+            }
+
+            $objectif = ObjectifMensuel::create([
+                'user_id' => auth()->id(),
+                'nom' => $request->nom,
+                'montant' => $request->montant,
+                'date_objectif' => $request->date_objectif
+            ]);
+
+            \Log::info('Objectif created successfully:', $objectif->toArray());
+
+            return redirect()->back()->with('success', 'Objectif d\'épargne créé avec succès');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('Validation error:', $e->errors());
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            \Log::error('Error creating objectif: ' . $e->getMessage());
+            \Log::error('Stack trace: ' . $e->getTraceAsString());
+            return redirect()->back()->with('error', 'Une erreur est survenue lors de la création de l\'objectif: ' . $e->getMessage())->withInput();
+        }
     }
 
     /**
@@ -51,7 +87,21 @@ class ObjectifMensuelController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $objectif = ObjectifMensuel::where('user_id', Auth::id())->findOrFail($id);
+        
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'montant' => 'required|numeric|min:0',
+            'date_objectif' => 'required|date|after:today'
+        ]);
+
+        $objectif->update([
+            'nom' => $request->nom,
+            'montant' => $request->montant,
+            'date_objectif' => $request->date_objectif
+        ]);
+
+        return back()->with('success', 'Objectif d\'épargne mis à jour avec succès');
     }
 
     /**
@@ -59,6 +109,9 @@ class ObjectifMensuelController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $objectif = ObjectifMensuel::where('user_id', Auth::id())->findOrFail($id);
+        $objectif->delete();
+
+        return back()->with('success', 'Objectif d\'épargne supprimé avec succès');
     }
 }

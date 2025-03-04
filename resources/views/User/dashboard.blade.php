@@ -764,6 +764,30 @@
         font-size: 0.875rem;
         color: #718096;
     }
+
+    .delete-btn {
+        background: linear-gradient(135deg, #EF4444, #DC2626);
+        border: none;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+    }
+
+    .delete-btn:hover {
+        transform: translateY(-2px) scale(1.1);
+        box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+        color: white;
+    }
+
+    .delete-btn i {
+        font-size: 0.875rem;
+    }
 </style>
 @endsection
 
@@ -771,34 +795,7 @@
 <div class="container py-4">
     <!-- Salary Management Modal -->
     <div class="modal fade" id="salaryModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Gérer Mon Salaire</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="{{ route('Salaire.Store', Auth::id()) }}" method="POST">
-                    @csrf
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Salaire Mensuel</label>
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="amount" value="{{ Auth::user()->salaire_mensuel ?? ''}}" required>
-                                <span class="input-group-text">DH</span>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Date de Crédit</label>
-                            <input type="date" class="form-control" name="date_credit" value="{{ Auth::user()->date_credit ?? ''}}" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-custom">Enregistrer</button>
-                    </div>
-                </form>
-                
-            </div>
-        </div>
+        <!-- ... existing code ... -->
     </div>
 
     <!-- Add Expense Modal -->
@@ -1210,48 +1207,54 @@
             <div class="chart-card">
                 <div class="chart-header">
                     <h5 class="chart-title">Objectifs d'Épargne</h5>
+                    @if(count($objectifs)==0)
+                        <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#savingsGoalModal">
+                            <i class="fas fa-plus me-2"></i>Ajouter
+                        </button>
+                    @endif
+                </div>
+
+                @forelse($objectifs as $objectif)
+                <div class="goal-card">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center">
+                            <div class="goal-icon" style="background: var(--primary-gradient)">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">{{ $objectif['nom'] }}</h6>
+                                <small class="text-muted">Objectif: {{ number_format($objectif['montant_objectif'], 2) }} DH</small>
+                            </div>
+                        </div>
+                        <form action="{{ route('savings-goals.destroy', $objectif['id']) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-circle delete-btn" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet Objectif ?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="goal-progress">
+                        <div class="goal-progress-bar" style="width: {{ $objectif['pourcentage'] }}%"></div>
+                    </div>
+                    <div class="goal-info">
+                        <span>{{ number_format($objectif['montant_actuel'], 2) }} DH épargnés</span>
+                        <span>{{ $objectif['pourcentage'] }}%</span>
+                    </div>
+                    <div class="mt-2 text-end">
+                        <small class="text-muted">Date objectif: {{ \Carbon\Carbon::parse($objectif['date_objectif'])->format('d/m/Y') }}</small>
+                    </div>
+                </div>
+                @empty
+
+                <div class="text-center py-4">
+                    <i class="fas fa-piggy-bank fa-3x text-muted mb-3"></i>
+                    <p class="text-muted">Vous n'avez pas encore d'objectifs d'épargne.</p>
                     <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#savingsGoalModal">
-                        <i class="fas fa-plus me-2"></i>Ajouter
+                        <i class="fas fa-plus me-2"></i>Créer mon premier objectif
                     </button>
                 </div>
-
-                <div class="goal-card">
-                    <div class="d-flex align-items-center">
-                        <div class="goal-icon" style="background: var(--primary-gradient)">
-                            <i class="fas fa-piggy-bank"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0">Vacances d'été</h6>
-                            <small class="text-muted">Objectif: 10,000 DH</small>
-                        </div>
-                    </div>
-                    <div class="goal-progress">
-                        <div class="goal-progress-bar" style="width: 60%"></div>
-                    </div>
-                    <div class="goal-info">
-                        <span>6,000 DH épargnés</span>
-                        <span>60%</span>
-                    </div>
-                </div>
-
-                <div class="goal-card">
-                    <div class="d-flex align-items-center">
-                        <div class="goal-icon" style="background: var(--primary-gradient)">
-                            <i class="fas fa-car"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h6 class="mb-0">Nouvelle Voiture</h6>
-                            <small class="text-muted">Objectif: 100,000 DH</small>
-                        </div>
-                    </div>
-                    <div class="goal-progress">
-                        <div class="goal-progress-bar" style="width: 25%"></div>
-                    </div>
-                    <div class="goal-info">
-                        <span>25,000 DH épargnés</span>
-                        <span>25%</span>
-                    </div>
-                </div>
+                @endforelse
             </div>
 
             <!-- Recurring Expenses -->
@@ -1308,6 +1311,8 @@
         </div>
     </div>
 </div>
+
+@include('User.modals.add-savings-goal')
 
 @endsection
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Depense;
 use App\Models\Categorie;
 use App\Models\DepenseRecurrente;
+use App\Models\SavingsGoal;
 
 class UserController extends Controller
 {
@@ -59,6 +60,23 @@ class UserController extends Controller
 
         $categories = Categorie::select('nom')->get();
 
+        // Récupérer les objectifs d'épargne
+        $objectifs = SavingsGoal::where('user_id', Auth::id())
+            ->orderBy('date_objectif', 'asc')
+            ->get()
+            ->map(function($objectif) {
+                $montantActuel = $objectif->montant * 0; 
+                $pourcentage = ($montantActuel / $objectif->montant) * 100;
+                return [
+                    'id' => $objectif->id,
+                    'nom' => $objectif->nom,
+                    'montant_objectif' => $objectif->montant,
+                    'montant_actuel' => $montantActuel,
+                    'pourcentage' => round($pourcentage, 2),
+                    'date_objectif' => $objectif->date_objectif
+                ];
+            });
+
         //dd($repartition);
 
 
@@ -70,7 +88,7 @@ class UserController extends Controller
             "BudjetRestant"=>$BudjetRestant,
             "repartitionDepense"=>$repartitionFinale,
             "categories"=>$categories,
-            
+            "objectifs"=>$objectifs
         ]);
      
     }

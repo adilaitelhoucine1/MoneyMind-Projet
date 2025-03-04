@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('objectifs_mensuels', function (Blueprint $table) {
+        Schema::create('savings_goals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('nom');
             $table->decimal('montant', 10, 2);
+            $table->decimal('montant_epargne', 10, 2)->default(0);
+            $table->decimal('Pourcentage', 5, 2)->default(10);
+            $table->decimal('progression', 5, 2)->default(0);
             $table->date('date_objectif');
             $table->timestamps();
         });
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('objectifs_mensuels');
+        Schema::dropIfExists('savings_goals');
     }
 };
