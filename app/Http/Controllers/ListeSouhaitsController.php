@@ -11,7 +11,8 @@ class ListeSouhaitsController extends Controller
      */
     public function index()
     {
-        //
+       return view('User.wishlist');
+
     }
 
     /**

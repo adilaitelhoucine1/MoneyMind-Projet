@@ -22,7 +22,7 @@ class DepenseController extends Controller
         return view('User.expenses.index',[
             "categories"=> $categories,
             "Depenses"=> $Depenses
-    
+   
     ]);
     }
 

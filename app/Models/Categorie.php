@@ -15,4 +15,8 @@ class Categorie extends Model
     {
         return $this->hasMany(Depense::class);
     }
+    public function listeSouhaits()
+{
+    return $this->hasMany(ListeSouhaits::class);
+}
 }

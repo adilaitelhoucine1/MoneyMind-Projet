@@ -323,6 +323,12 @@
                                 <span class="menu-text">Objectifs</span>
                             </a>
                         </div>
+                        <div class="menu-item">
+                            <a href="/wishlist" class="menu-link {{ request()->is('wishlist*') ? 'active' : '' }}">
+                                <i class="fas fa-heart menu-icon"></i>
+                                <span class="menu-text">Liste de Souhaits</span>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="menu-section">

@@ -46,17 +46,12 @@ class SavingGoalsManagement extends Command
 
         $this->info('👥 Nombre d\'utilisateurs trouvés: ' . $users->count());
 
-        if ($users->count() === 0) {
-            $this->warn('⚠️ Aucun utilisateur avec salaire et date de crédit configurés.');
-            return;
-        }
-
         foreach ($users as $user) {
             $this->info("\n📊 Traitement pour l'utilisateur: {$user->name}");
             $this->info("💵 Salaire mensuel: {$user->salaire_mensuel} DH");
             $this->info("📅 Jour de crédit configuré: {$user->date_credit}");
 
-            if ($today == 3) {
+            if ($today == $user->date_credit) {
                 $this->info("✅ C'est le jour de crédit pour {$user->name}");
                 
                 DB::beginTransaction();

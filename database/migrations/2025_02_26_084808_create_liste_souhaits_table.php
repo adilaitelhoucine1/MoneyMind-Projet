@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('liste_souhaits', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('categorie_id')->constrained()->onDelete('cascade');
             $table->string('nom');
             $table->decimal('prix_estime', 10, 2);
+            $table->decimal('montant_actuel', 10, 2)->default(0);
             $table->enum('priorite', ['faible', 'moyenne', 'élevée']);
             $table->timestamps();
         });
