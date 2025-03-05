@@ -19,11 +19,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
        
-        $schedule->command('app:saving-goals-management')
-                ->dailyAt('00:01')
-                ->withoutOverlapping();
         // $schedule->command('app:saving-goals-management')
-        //         ->everyFiveSeconds();
+        //         ->dailyAt('00:01')
+        //         ->withoutOverlapping();
+        $schedule->command('salary:add')
+                ->everyMinute();
        
     }
 

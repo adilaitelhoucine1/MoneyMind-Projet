@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 use App\Models\Depense;
 
 
@@ -44,17 +45,15 @@ class DepenseController extends Controller
             'prix' => 'required|numeric|min:0',
             'categorie_id' => 'required|exists:categories,id'
         ]);
-
-        Depense::create([
-            'nom' => $request->nom,
-            'prix' => $request->prix,
-            'categorie_id' => $request->categorie_id,
-            'user_id' => auth()->user()->id
-        ]);
-
+        $user=auth()->user();
+            Depense::create([
+                'nom' => $request->nom,
+                'prix' => $request->prix,
+                'categorie_id' => $request->categorie_id,
+                'user_id' => auth()->user()->id
+            ]);
+    
         return redirect()->route('user.expense');
-
-
     }
 
     /**
@@ -85,6 +84,8 @@ class DepenseController extends Controller
         ]);
     
         $depense = Depense::findOrFail($id);
+        $user=auth()->user();
+        
         $depense->update([
             'nom' => $request->nom,
             'prix' => $request->prix,

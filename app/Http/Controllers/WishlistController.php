@@ -78,23 +78,23 @@ class WishlistController extends Controller
      */
     public function update(Request $request, $id)
     {
+       //dd($request->input('name'));
         try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'price' => 'required|numeric|min:0',
-                'current_amount' => 'required|numeric|min:0',
-                'category' => 'required|exists:categories,id',
-                'priorite' => 'required|in:faible,moyenne,élevée'
-            ]);
+            // $request->validate([
+            //     'name' => 'required|string|max:255',
+            //     'price' => 'required|numeric|min:0',
+            //     'current_amount' => 'required|numeric|min:0',
+            //     'category' => 'required|exists:categories,id',
+            //     'priorite' => 'required|in:faible,moyenne,élevée'
+            // ]);
+
 
             $wish = ListeSouhaits::findOrFail($id);
-
             $wish->update([
-                'nom' => $request->name,
-                'prix_estime' => $request->price,
-                'montant_actuel' => $request->current_amount,
-                'categorie_id' => $request->category,
-                'priorite' => $request->priorite
+                'nom' => $request->input('name'),
+                'prix_estime' => $request->input('price'),
+                'categorie_id' => $request->input('category'),
+                'priorite' =>$request->input('priorite')
             ]);
 
             return redirect()->route('wishlist.index')

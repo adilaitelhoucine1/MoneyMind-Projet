@@ -18,9 +18,7 @@ class AddSalary extends Command
         parent::__construct();
     }
 
-    /**
-     * Execute the console command.
-     */
+  
 
      public function handle()
      {
@@ -32,7 +30,7 @@ class AddSalary extends Command
 
 
          foreach ($users as $user) {
-             if ($today == $user->date_credit) {
+             if ($today == 5) {
                  $user->Budjet+=$user->salaire_mensuel;
                  $user->save();
                  $this->info("Salaire ajouté pour : {$user->name}");

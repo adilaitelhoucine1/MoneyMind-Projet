@@ -351,9 +351,10 @@
                                     <span class="input-group-text">DH</span>
                                 </div>
                             </div>
-                            
+                            Modifier le Souhait
+
                             <div class="mb-4">
-                                <label class="form-label">Catégorie</label>
+                        
                                 <select class="form-select" name="category" required>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" {{ $wish->categorie_id == $category->id ? 'selected' : '' }}>

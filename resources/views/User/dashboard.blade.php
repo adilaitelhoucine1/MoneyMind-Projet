@@ -795,7 +795,36 @@
 <div class="container py-4">
     <!-- Salary Management Modal -->
     <div class="modal fade" id="salaryModal" tabindex="-1">
-        <!-- ... existing code ... -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gérer le Salaire</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="{{route('Salaire.Store',Auth::id())}}" method="POST">
+                    @csrf
+                   
+                    <div class="modal-body">
+                        <div class="mb-4">
+                            <label class="form-label">Salaire Mensuel</label>
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="amount" value="{{ auth()->user()->salaire_mensuel }}" required>
+                                <span class="input-group-text">DH</span>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Date de Crédit</label>
+                            <input type="date" class="form-control" name="date_credit" value="{{ auth()->user()->date_credit }}" min="1" max="31" required>
+                            <small class="text-muted">Jour du mois où le salaire est crédité (1-31)</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
+                        <button type="submit" class="btn btn-custom">Enregistrer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <!-- Add Expense Modal -->
@@ -913,7 +942,7 @@
                     <h5 class="modal-title">Ajouter un Revenu Complémentaire</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/user/side-hustle/store" method="POST">
+                <form action="/user/sidehustle/store" method="POST">
                     @csrf
                     <div class="modal-body">
                         <div class="mb-4">
