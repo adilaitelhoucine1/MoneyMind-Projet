@@ -26,6 +26,8 @@
                 --topbar-height: 70px;
                 --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.08);
                 --transition-speed: 0.3s;
+                --primary-gradient: linear-gradient(135deg, #4F46E5, #3B82F6);
+                --danger-gradient: linear-gradient(135deg, #EF4444, #DC2626);
             }
             
             body {
@@ -226,8 +228,8 @@
             }
             
             .user-avatar {
-                width: 2.5rem;
-                height: 2.5rem;
+                width: 2rem;
+                height: 2rem;
                 border-radius: 50%;
                 object-fit: cover;
             }
@@ -380,10 +382,9 @@
                     </div>
                     <div class="topbar-right">
                         <div class="user-menu">
-                            <img src="https://ui-avatars.com/api/?name=John+Doe" alt="User Avatar" class="user-avatar">
                             <div class="user-info">
-                                <div class="user-name">{{Auth::user()->name}}</div>
-                                <div class="user-role">Utilisateur</div>
+                                <div class="user-name">{{ Auth::user()->name }}</div>
+                                <div class="user-role">{{ Auth::user()->role }}</div>
                             </div>
                         </div>
                     </div>

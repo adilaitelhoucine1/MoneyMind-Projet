@@ -10,6 +10,7 @@ use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\ObjectifMensuelController;
 use App\Http\Controllers\SavingsGoalController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
 use App\Http\Middleware\CheckIfUser;
@@ -17,18 +18,19 @@ use App\Http\Middleware\CheckIfUser;
 
 Route::get('/', [HomeController::class, 'redirect'])->name('dashboard');
 
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/pro', [ProfileController::class, 'edit'])->name('profile.edit.pro');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::put('/password', [PasswordController::class, 'update'])->name('password.update');
+});
 
 Route::resource('categories', CategorieController::class);
 Route::resource('depenses', DepenseController::class);
 Route::resource('DepenseRecurrentes', DepenseRecurrenteController::class);
 Route::resource('Wishlist', WishlistController::class);
 
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 Route::middleware(['auth', CheckIfAdmin::class])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
