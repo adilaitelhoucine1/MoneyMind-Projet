@@ -30,7 +30,7 @@ class AddSalary extends Command
 
 
          foreach ($users as $user) {
-             if ($today == 5) {
+             if ($today == $user->date_credit) {
                  $user->Budjet+=$user->salaire_mensuel;
                  $user->save();
                  $this->info("Salaire ajouté pour : {$user->name}");

@@ -37,58 +37,56 @@ class SavingGoalsManagement extends Command
      */
     public function handle()
     {
-        $today = Carbon::now()->day;
-      
         $users = User::whereNotNull('salaire_mensuel')
                     ->whereNotNull('date_credit')
                     ->get();
 
         foreach ($users as $user) {
-            // if ($today == $user->date_credit) {
-            //     $this->info("✅ C'est le jour de crédit pour {$user->name}");
-                
-            //     DB::beginTransaction();
+            $objectifs = SavingsGoal::where('user_id', $user->id)->get();
             
-            //         $savingsGoals = SavingsGoal::where('user_id', $user->id)
-            //             ->where('date_objectif', '>', now())
-            //             ->get();
-
-            //         foreach ($savingsGoals as $goal) {
-                     
-            //             $amountToSave = ($user->salaire_mensuel * $goal->Pourcentage) / 100;
-            //             $this->info("💸 Montant à épargner ce mois: {$amountToSave} DH");
-                        
-            //             $goal->montant_epargne = ($goal->montant_epargne ?? 0) + $amountToSave;
-            //             $goal->progression = ($goal->montant_epargne / $goal->montant) * 100;
-                        
-            //             $goal->save();
-
-            //             $user->Budjet -= $amountToSave;
-            //             $user->save();
-
-            //             $this->info("✨ Nouveau montant épargné total: {$goal->montant_epargne} DH");
-            //             $this->info("📈 Progression: {$goal->progression}%");
-            //         }
+            foreach ($objectifs as $objectif) {
+// ba9i mawslsh obkectif dyalo
+                if ($objectif->montant_epargne < $objectif->montant) {
+                    // montant bash ayb9a ytzad dakshi
+                    $epargne = ($objectif->montant * $objectif->Pourcentage) / 100;
                     
-            //         DB::commit();
-            //         $this->info("\n✅ Transactions validées pour {$user->name}");
-              
-            // } else {
-            //     $this->info("⏳ Ce n'est pas encore le jour de crédit pour {$user->name}");
-            // }
-   
-            $savingsGoals = SavingsGoal::where('user_id', $user->id)->get();
-            
-            foreach ($savingsGoals as $savingsGoal) {
-                if($savingsGoal->montant_epargne < $savingsGoal->montant){
-                    $savingsGoal->montant_epargne = $savingsGoal->montant_epargne + ($savingsGoal->montant * $savingsGoal->Pourcentage) / 100;
-                    $savingsGoal->progression += $savingsGoal->Pourcentage;
-                    $savingsGoal->save();
-                    $this->info("\n✅ Objectif Progression done");
+                    if ($user->Budjet >= $epargne) {
+// zid dakshi li khasi ytzad  ($epargne)
+                        $objectif->montant_epargne += $epargne;
+                        $objectif->progression += $objectif->Pourcentage;
+                        $user->Budjet -= $epargne;
+ // reste : chhal ba9i lk twsl objectif 
+                        $reste = $objectif->montant - $objectif->montant_epargne;
+                        if ($user->Budjet > 0 && $reste > 0) {
+                            $epargneSupp = min($user->Budjet, $reste);
+                            if ($epargneSupp > 0) {
+                                $objectif->montant_epargne += $epargneSupp;
+                                $objectif->Pourcentage += ($epargneSupp / $objectif->montant) * 100;
+                                $objectif->progression = ($objectif->montant_epargne / $objectif->montant) * 100;
+                                $user->Budjet -= $epargneSupp;
+
+                                $this->info("💰 Extra épargné: {$epargneSupp} DH");
+                                $this->info("📈 Nouveau %: {$objectif->Pourcentage}%");
+                            }
+                        }
+
+                        $objectif->save();
+                        $user->save();
+
+                        $this->info("✅ Objectif mis à jour:");
+                        $this->info("💸 Épargné: {$epargne} DH");
+                        $this->info("📊 Total: {$objectif->montant_epargne} DH");
+                        $this->info("📈 Progression: {$objectif->progression}%");
+                        $this->info("💳 Reste: {$user->Budjet} DH");
+                    } else {
+                        $this->info("⚠️ Pas assez de budget pour {$user->name}");
+                    }
+                } else {
+                    $this->info("🎯 Objectif atteint: {$user->name}");
                 }
             }
         }
-
-        $this->info("\n✅ Traitement terminé.");
+        $this->info("✅ Terminé");
     }
 }
+
