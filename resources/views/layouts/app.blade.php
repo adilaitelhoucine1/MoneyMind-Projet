@@ -313,18 +313,8 @@
                                 <span class="menu-text">Dépenses</span>
                             </a>
                         </div>
-                        <div class="menu-item">
-                            <a href="/budgets" class="menu-link {{ request()->is('budgets*') ? 'active' : '' }}">
-                                <i class="fas fa-piggy-bank menu-icon"></i>
-                                <span class="menu-text">Budgets</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="/goals" class="menu-link {{ request()->is('goals*') ? 'active' : '' }}">
-                                <i class="fas fa-bullseye menu-icon"></i>
-                                <span class="menu-text">Objectifs</span>
-                            </a>
-                        </div>
+                 
+                   
                         <div class="menu-item">
                             <a href="/wishlist" class="menu-link {{ request()->is('wishlist*') ? 'active' : '' }}">
                                 <i class="fas fa-heart menu-icon"></i>
@@ -342,28 +332,13 @@
                             </a>
                         </div>
                         <div class="menu-item">
-                            <a href="/insights" class="menu-link {{ request()->is('insights*') ? 'active' : '' }}">
-                                <i class="fas fa-lightbulb menu-icon"></i>
-                                <span class="menu-text">Insights</span>
+                            <a href="/profile" class="menu-link {{ request()->is('profile*') ? 'active' : '' }}">
+                                <i class="fas fa-user menu-icon"></i>
+                                <span class="menu-text">Profile</span>
                             </a>
                         </div>
                     </div>
 
-                    <div class="menu-section">
-                        <div class="menu-header">Paramètres</div>
-                        <div class="menu-item">
-                            <a href="/profile" class="menu-link {{ request()->is('profile*') ? 'active' : '' }}">
-                                <i class="fas fa-user menu-icon"></i>
-                                <span class="menu-text">Profil</span>
-                            </a>
-                        </div>
-                        <div class="menu-item">
-                            <a href="/settings" class="menu-link {{ request()->is('settings*') ? 'active' : '' }}">
-                                <i class="fas fa-cog menu-icon"></i>
-                                <span class="menu-text">Paramètres</span>
-                            </a>
-                        </div>
-                    </div>
                 </nav>
             </aside>
 

@@ -24,7 +24,8 @@ class User extends Authenticatable
         'role',
         'last_logged_in',
         'salaire_mensuel',
-        'date_credit'
+        'date_credit',
+        'seuil_alerte_global'
     ];
 
     /**

@@ -47,7 +47,7 @@ class SavingGoalsManagement extends Command
             foreach ($objectifs as $objectif) {
 // ba9i mawslsh obkectif dyalo
                 if ($objectif->montant_epargne < $objectif->montant) {
-                    // montant bash ayb9a ytzad dakshi
+// montant bash ayb9a ytzad dakshi
                     $epargne = ($objectif->montant * $objectif->Pourcentage) / 100;
                     
                     if ($user->Budjet >= $epargne) {

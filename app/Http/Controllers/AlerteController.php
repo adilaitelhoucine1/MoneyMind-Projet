@@ -49,9 +49,19 @@ class AlerteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $request->validate([
+            'Seuil_global' => 'required|numeric|min:1|max:100'
+        ]);
+
+        auth()->user()->update([
+            'seuil_alerte_global' => $request->Seuil_global
+        ]);
+
+        
+
+        return redirect()->back();
     }
 
     /**

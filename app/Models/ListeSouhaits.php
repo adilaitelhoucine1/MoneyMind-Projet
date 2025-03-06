@@ -19,12 +19,18 @@ class ListeSouhaits extends Model
         'montant_actuel',
         'categorie_id',
         'user_id',
-        'priorite'
+        'priorite',
+        'status',
+        'date_realisation',
+        'montant_realise',
+        'progression',
     ];
 
     protected $casts = [
         'prix_estime' => 'decimal:2',
-        'montant_actuel' => 'decimal:2'
+        'montant_actuel' => 'decimal:2',
+        'montant_realise' => 'decimal:2',
+        'date_realisation' => 'datetime'
     ];
 
     /**

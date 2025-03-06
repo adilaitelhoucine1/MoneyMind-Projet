@@ -30,6 +30,8 @@ class UserController extends Controller
         $TotalAllDepenses=$totalDepenses+$totalDepensesRecurrente;
         $budget = User::where('id', Auth::user()->id)->value('Budjet');
         $BudjetRestant=$budget-$TotalAllDepenses;
+        $pourcentageRestant=($TotalAllDepenses*100)/$budget;
+
 
         $repartitionDepense = DB::table('depenses')
             ->select('categories.nom', DB::raw('SUM(depenses.prix) as total'))
@@ -73,6 +75,8 @@ class UserController extends Controller
                     'montant_objectif' => $objectif->montant,
                     'montant_actuel' => $montantActuel,
                     'pourcentage' => round($pourcentage, 2),
+                    'progression' => $objectif->progression,
+                    'montant_epargne' => $objectif->montant_epargne,
                     'date_objectif' => $objectif->date_objectif
                 ];
             });
@@ -88,7 +92,8 @@ class UserController extends Controller
             "BudjetRestant"=>$BudjetRestant,
             "repartitionDepense"=>$repartitionFinale,
             "categories"=>$categories,
-            "objectifs"=>$objectifs
+            "objectifs"=>$objectifs,
+            "pourcentageRestant"=>$pourcentageRestant,
         ]);
      
     }

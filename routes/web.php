@@ -10,6 +10,7 @@ use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\ObjectifMensuelController;
 use App\Http\Controllers\SavingsGoalController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AlerteController;
 use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
@@ -63,6 +64,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/wishlist/{id}', [App\Http\Controllers\WishlistController::class, 'update'])->name('wishlist.update');
     Route::delete('/wishlist/{id}', [App\Http\Controllers\WishlistController::class, 'destroy'])->name('wishlist.destroy');
 });
+
+Route::post('/user/alerts/update', [App\Http\Controllers\AlerteController::class, 'update'])
+    ->name('alerts.update')
+    ->middleware('auth');
 
 // Route::get('/admin/dashboard', function () {
 //     echo "hello admi";

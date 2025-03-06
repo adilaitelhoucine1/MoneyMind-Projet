@@ -718,31 +718,38 @@
     }
 
     /* Progress Ring Styles */
+    .expense-percentage {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 4px 0;
+    }
+
     .progress-ring {
         position: relative;
-        width: 36px;
-        height: 36px;
+        width: 42px;
+        height: 42px;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 
     .circular-chart {
-        width: 36px;
-        height: 36px;
+        width: 42px;
+        height: 42px;
         transform: rotate(-90deg);
     }
 
     .circle-bg {
         fill: none;
         stroke: #E2E8F0;
-        stroke-width: 2.8;
+        stroke-width: 3;
     }
 
     .circle {
         fill: none;
         stroke: #4F46E5;
-        stroke-width: 2.8;
+        stroke-width: 3;
         stroke-linecap: round;
         transition: stroke-dasharray 0.3s ease;
     }
@@ -751,18 +758,13 @@
         position: absolute;
         font-size: 0.75rem;
         font-weight: 600;
-        color: #4A5568;
-    }
-
-    .expense-percentage {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
+        color: #4F46E5;
     }
 
     .percentage-label {
         font-size: 0.875rem;
-        color: #718096;
+        color: #6B7280;
+        font-weight: 500;
     }
 
     .delete-btn {
@@ -890,43 +892,31 @@
                     <h5 class="modal-title">Configurer les Alertes</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form action="/user/alerts/update" method="POST">
+                <form action="{{ route('alerts.update') }}" method="POST">
                     @csrf
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Seuil Global (%)</label>
-                            <input type="number" class="form-control" name="global_threshold" min="1" max="100" value="80">
-                        </div>
+                        <!-- Seuil Global -->
                         <div class="mb-4">
-                            <label class="form-label">Seuils par Catégorie</label>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">Logement</span>
-                                <input type="number" class="form-control" name="category_thresholds[1]" value="75" min="1" max="100">
+                            <label class="form-label">Seuil Global (%)</label>
+                            <div class="input-group">
+                                <input type="number" 
+                                       class="form-control" 
+                                       name="Seuil_global" 
+                                       min="1" 
+                                       max="100" 
+                                       value="{{ auth()->user()->alert_threshold ?? 50 }}"
+                                       required>
                                 <span class="input-group-text">%</span>
                             </div>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">Alimentation</span>
-                                <input type="number" class="form-control" name="category_thresholds[2]" value="70" min="1" max="100">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">Transport</span>
-                                <input type="number" class="form-control" name="category_thresholds[3]" value="80" min="1" max="100">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">Loisirs</span>
-                                <input type="number" class="form-control" name="category_thresholds[4]" value="60" min="1" max="100">
-                                <span class="input-group-text">%</span>
-                            </div>
-                            <div class="input-group mb-2">
-                                <span class="input-group-text">Factures</span>
-                                <input type="number" class="form-control" name="category_thresholds[5]" value="85" min="1" max="100">
-                                <span class="input-group-text">%</span>
-                            </div>
+                            <small class="text-muted">Vous serez alerté quand vos dépenses dépasseront ce pourcentage de votre budget total</small>
                         </div>
+
+                  
+
+                
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Annuler</button>
                         <button type="submit" class="btn btn-custom">Enregistrer</button>
                     </div>
                 </form>
@@ -1053,11 +1043,12 @@
                         <div class="stat-meta">
                             <div class="expense-percentage">
                                 <div class="progress-ring">
-                                    <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <svg viewBox="0 0 35 35" class="circular-chart">
                                         <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
                                         <path class="circle" stroke-dasharray="43, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
                                     </svg>
-                                    <span>43%</span>
+                                   
+                                    <span style="font-size: 10px">{{number_format($pourcentageRestant, 1)}} %</span>
                                 </div>
                                 <span class="percentage-label">du revenu</span>
                             </div>
@@ -1171,12 +1162,12 @@
                 <div class="chart-header">
                     <h5 class="chart-title">Répartition des Dépenses</h5>
                     <div>
-                        {{-- <button class="btn btn-custom btn-sm me-2" data-bs-toggle="modal" data-bs-target="#alertsModal">
+                        <button class="btn btn-custom btn-sm me-2" data-bs-toggle="modal" data-bs-target="#alertsModal">
                             <i class="fas fa-bell me-2"></i>Alertes
                         </button>
                         <button class="btn btn-custom btn-sm" data-bs-toggle="modal" data-bs-target="#expenseModal">
                             <i class="fas fa-plus me-2"></i>Ajouter
-                        </button> --}}
+                        </button>
                     </div>
                 </div>
                 <canvas id="expenseChart" height="300"></canvas>
@@ -1244,6 +1235,7 @@
                 </div>
 
                 @forelse($objectifs as $objectif)
+                
                 <div class="goal-card">
                     <div class="d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center">
@@ -1252,7 +1244,7 @@
                             </div>
                             <div class="ms-3">
                                 <h6 class="mb-0">{{ $objectif['nom'] }}</h6>
-                                <small class="text-muted">Objectif: {{ number_format($objectif['montant_objectif'], 2) }} DH</small>
+                                <small class="text-muted">Objectif: {{ number_format($objectif['montant_objectif'], 0) }} DH</small>
                             </div>
                         </div>
                         <form action="{{ route('savings-goals.destroy', $objectif['id']) }}" method="POST" class="d-inline">
@@ -1264,11 +1256,11 @@
                         </form>
                     </div>
                     <div class="goal-progress">
-                        <div class="goal-progress-bar" style="width: {{ $objectif['pourcentage'] }}%"></div>
+                        <div class="goal-progress-bar" style="width: {{ $objectif['progression'] }}%"></div>
                     </div>
                     <div class="goal-info">
-                        <span>{{ number_format($objectif['montant_actuel'], 2) }} DH épargnés</span>
-                        <span>{{ $objectif['pourcentage'] }}%</span>
+                        <span>{{ number_format($objectif['montant_epargne'], 2) }} DH épargnés</span>
+                        <span>{{ $objectif['progression'] }}%</span>
                     </div>
                     <div class="mt-2 text-end">
                         <small class="text-muted">Date objectif: {{ \Carbon\Carbon::parse($objectif['date_objectif'])->format('d/m/Y') }}</small>
