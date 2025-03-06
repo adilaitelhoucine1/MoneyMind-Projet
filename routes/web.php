@@ -69,6 +69,9 @@ Route::post('/user/alerts/update', [App\Http\Controllers\AlerteController::class
     ->name('alerts.update')
     ->middleware('auth');
 
+Route::post('/user/alerts/MarkAsdone{id}', [App\Http\Controllers\AlerteController::class, 'MarkAsdone'])
+    ->name('alerts.MarkAsdone')
+    ->middleware('auth');   
 // Route::get('/admin/dashboard', function () {
 //     echo "hello admi";
 // })->middleware('role:admin');

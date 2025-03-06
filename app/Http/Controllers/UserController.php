@@ -11,6 +11,7 @@ use App\Models\Depense;
 use App\Models\Categorie;
 use App\Models\DepenseRecurrente;
 use App\Models\SavingsGoal;
+use App\Models\Alerte;
 
 class UserController extends Controller
 {
@@ -83,8 +84,11 @@ class UserController extends Controller
 
         //dd($repartition);
 
-
-
+        $alertes = Alerte::where('user_id', Auth::id())
+            ->where('est_lu', false)
+            ->orderBy('created_at', 'desc')
+            ->get();
+//dd($alertes);
         return view('User.dashboard',[
             "categories"=>$categories,
             "TotalAllDepenses"=>$TotalAllDepenses,
@@ -94,6 +98,7 @@ class UserController extends Controller
             "categories"=>$categories,
             "objectifs"=>$objectifs,
             "pourcentageRestant"=>$pourcentageRestant,
+            "alertes" => $alertes
         ]);
      
     }

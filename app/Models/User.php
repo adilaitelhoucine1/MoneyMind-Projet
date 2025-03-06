@@ -57,4 +57,12 @@ class User extends Authenticatable
     {
         return $this->role === $role;
     }
+
+    /**
+     * Get the alerts for the user.
+     */
+    public function alertes()
+    {
+        return $this->hasMany(Alerte::class);
+    }
 }

@@ -790,6 +790,121 @@
     .delete-btn i {
         font-size: 0.875rem;
     }
+
+    /* Alert Styles */
+    .custom-alert {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .alert-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        background: rgba(255, 193, 7, 0.1);
+        color: #ffc107;
+    }
+
+    /* Notification Bell Styles */
+    .btn-notification {
+        position: relative;
+        padding: 0.5rem;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #dc3545;
+        color: white;
+        border-radius: 50%;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.75rem;
+        min-width: 20px;
+        text-align: center;
+    }
+
+    .notification-dropdown {
+        width: 320px;
+        padding: 0;
+        border-radius: 15px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        background: white;
+    }
+
+    .notification-header {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .notification-body {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        padding: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .notification-item:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    .notification-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    .notification-footer {
+        padding: 0.75rem;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+
+    /* Mark as read button styles */
+    .mark-as-read-btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        border-radius: 20px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        color: #059669;
+    }
+
+  
+
+    .mark-as-read-btn i {
+        font-size: 0.75rem;
+    }
 </style>
 @endsection
 
@@ -978,6 +1093,99 @@
         </div>
         <p class="mb-0">Voici un aperçu de vos finances</p>
     </div>
+
+    <!-- Alerts Section -->
+    <div class="alerts-section mb-4">
+        @foreach($alertes as $alerte)
+        <div class="alert custom-alert alert-warning fade show" role="alert">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div class="alert-icon me-3">
+                        @switch($alerte->type)
+                            @case('budget_bas')
+                                <i class="fas fa-exclamation-triangle"></i>
+                                @break
+                            @case('objectif_atteint')
+                                <i class="fas fa-trophy"></i>
+                                @break
+                            @default
+                                <i class="fas fa-bell"></i>
+                        @endswitch
+                    </div>
+                    <div class="alert-content">
+                        <h6 class="alert-heading mb-1">
+                            @switch($alerte->type)
+                                @case('budget_bas')
+                                    Alerte Budget
+                                    @break
+                                @case('objectif_atteint')
+                                    Objectif Atteint
+                                    @break
+                                @default
+                                    Notification
+                            @endswitch
+                        </h6>
+                        <p class="mb-0">{{ $alerte->message }}</p>
+                        <small class="text-muted">{{ $alerte->created_at->diffForHumans() }}</small>
+                    </div>
+                </div>
+                <form action="{{route("alerts.MarkAsdone",$alerte->id)}}" method="post" >
+                @csrf
+                    <button type="submit" class="btn btn-sm btn-outline-success mark-as-read-btn">
+                        <i class="fas fa-check me-1"></i>
+                        Marquer comme lu
+                    </button>
+
+                </form>
+            </div>
+        </div>
+        @endforeach
+    </div>
+
+    {{-- <!-- Notification Bell with Counter -->
+    <div class="notification-bell position-fixed" style="top: 20px; right: 20px;">
+        @php
+            $unreadCount = Alerte::where('user_id', Auth::id())->where('est_lu', false)->count();
+        @endphp
+        @if($unreadCount > 0)
+        <div class="dropdown">
+            <button class="btn btn-custom btn-notification" type="button" data-bs-toggle="dropdown">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">{{ $unreadCount }}</span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end notification-dropdown">
+                <div class="notification-header">
+                    <h6 class="mb-0">Notifications</h6>
+                </div>
+                <div class="notification-body">
+                    @foreach(Alerte::where('user_id', Auth::id())->where('est_lu', false)->latest()->take(5)->get() as $alerte)
+                    <div class="notification-item">
+                        <div class="notification-icon">
+                            @switch($alerte->type)
+                                @case('budget_bas')
+                                    <i class="fas fa-exclamation-triangle text-warning"></i>
+                                    @break
+                                @case('objectif_atteint')
+                                    <i class="fas fa-trophy text-success"></i>
+                                    @break
+                                @default
+                                    <i class="fas fa-bell text-primary"></i>
+                            @endswitch
+                        </div>
+                        <div class="notification-content">
+                            <p class="mb-1">{{ $alerte->message }}</p>
+                            <small class="text-muted">{{ $alerte->created_at->diffForHumans() }}</small>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                <div class="notification-footer">
+                    <a href="{{ route('alerts.index') }}" class="btn btn-link btn-sm w-100">Voir toutes les notifications</a>
+                </div>
+            </div>
+        </div>
+        @endif
+    </div> --}}
 
     <!-- Financial Overview -->
     <div class="row g-4 mb-4">

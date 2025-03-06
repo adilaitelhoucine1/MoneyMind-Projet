@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Alerte;  
 class AlerteController extends Controller
 {
     /**
@@ -64,11 +64,13 @@ class AlerteController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+   
+        public function MarkAsdone($id)
+        {
+            $alerte = Alerte::find($id);
+            $alerte->est_lu = true;
+            $alerte->save();
+
+            return redirect()->back();
+        }
 }

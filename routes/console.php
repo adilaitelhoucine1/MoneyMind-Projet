@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 Schedule::command('salary:add')->daily();
 Schedule::command('app:saving-goals-management')->daily();
+Schedule::command('app:check-seuil-budjet')->daily();
+Schedule::command('app:wishlist-managament')->daily();
+                            
