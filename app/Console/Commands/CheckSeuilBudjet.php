@@ -45,7 +45,7 @@ class CheckSeuilBudjet extends Command
                     'est_lu' => false
                 ]);
 
-                Mail::to($user->email)->send(new BudgetAlertMail($user, $pourcentageDepense));
+               // Mail::to($user->email)->send(new BudgetAlertMail($user, $pourcentageDepense));
                 
                 $this->info("Alerte et email envoyés à {$user->name}");
              }

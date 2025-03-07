@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Models\Alerte;
 
 class test extends Command
 {
@@ -11,7 +12,7 @@ class test extends Command
      *
      * @var string
      */
-    protected $signature = 'bb';
+    protected $signature = 'x';
 
     /**
      * The console command description.
@@ -25,6 +26,11 @@ class test extends Command
      */
     public function handle()
     {
-        $this->info("test");
+        Alerte::create([
+            'user_id' => 5,
+            'message' => " Attention :Test badrihno",
+            'type' => 'budget_bas',
+            'est_lu' => false
+        ]);
     }
 }

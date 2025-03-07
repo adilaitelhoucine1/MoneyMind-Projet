@@ -12,15 +12,28 @@ use App\Models\Categorie;
 use App\Models\DepenseRecurrente;
 use App\Models\SavingsGoal;
 use App\Models\Alerte;
-
+use App\Services\GeminiService;
 class UserController extends Controller
 {
-    
+    protected $geminiService;
+
+    public function __construct(GeminiService $geminiService)
+    {
+        $this->geminiService = $geminiService;
+    }
+
     public function UserDashboard()
     {
-
+        
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
+        
+        $depenses=Depense::all();
+        
+        $depensesRecurrentes=DepenseRecurrente::whereMonth('created_at', $currentMonth)
+        ->whereYear('created_at', $currentYear)->get();
+        
+        
         $categories= DB::table('categories')->distinct()->get();
         $totalDepenses=Depense::whereMonth('created_at', $currentMonth)
         ->whereYear('created_at', $currentYear)
@@ -32,7 +45,8 @@ class UserController extends Controller
         $budget = User::where('id', Auth::user()->id)->value('Budjet');
         $BudjetRestant=$budget-$TotalAllDepenses;
         $pourcentageRestant=($TotalAllDepenses*100)/$budget;
-
+        
+        $suggestions = $this->geminiService->getSuggestions($depenses, $depensesRecurrentes, $budget);
 
         $repartitionDepense = DB::table('depenses')
             ->select('categories.nom', DB::raw('SUM(depenses.prix) as total'))
@@ -98,7 +112,8 @@ class UserController extends Controller
             "categories"=>$categories,
             "objectifs"=>$objectifs,
             "pourcentageRestant"=>$pourcentageRestant,
-            "alertes" => $alertes
+            "alertes" => $alertes,
+            "suggestions" => $suggestions,
         ]);
      
     }

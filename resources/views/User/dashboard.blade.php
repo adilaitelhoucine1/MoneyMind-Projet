@@ -1428,7 +1428,7 @@
             <div class="ai-suggestion">
                 <i class="fas fa-robot mb-3"></i>
                 <h5 class="mb-3">Conseil IA</h5>
-                <p class="mb-0">Basé sur vos dépenses, vous pourriez économiser 500 DH par mois en optimisant vos achats alimentaires.</p>
+                <p class="mb-0">{{$suggestions}}</p>
             </div>
 
             <!-- Savings Goals -->

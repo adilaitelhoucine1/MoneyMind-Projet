@@ -43,6 +43,10 @@ class BudgetAlertMail extends Mailable
     {
         return new Content(
             view: 'emails.budget-alert',
+            with: [
+                'user' => $this->user,
+                'pourcentageDepense' => $this->pourcentageDepense
+            ]
         );
     }
 
@@ -58,7 +62,6 @@ class BudgetAlertMail extends Mailable
 
     public function build()
     {
-        return $this->view('emails.budget-alert')  
-                    ->subject('Alerte de dépassement de budget');
+        return $this->subject('Alerte Budget - MoneyMind');
     }
 }

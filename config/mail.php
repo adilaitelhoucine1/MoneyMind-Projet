@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -36,17 +36,24 @@ return [
     */
 
     'mailers' => [
-
         'smtp' => [
             'transport' => 'smtp',
-            'scheme' => env('MAIL_SCHEME'),
-            'url' => env('MAIL_URL'),
-            'host' => env('MAIL_HOST', '127.0.0.1'),
-            'port' => env('MAIL_PORT', 2525),
+            'host' => env('MAIL_HOST', 'smtp.gmail.com'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
-            'local_domain' => env('MAIL_EHLO_DOMAIN', parse_url(env('APP_URL', 'http://localhost'), PHP_URL_HOST)),
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+        ],
+    
+        'mailersend' => [
+            'transport' => 'smtp',
+            'host' => 'smtp.mailersend.net',
+            'port' => 587,
+            'encryption' => 'tls',
+            'username' => env('mlsn.13b6c14617fa0088a4125fd20a038b7f35d72a1568973d33947d2aab9b7efc29'), 
+            'password' => env('mlsn.13b6c14617fa0088a4125fd20a038b7f35d72a1568973d33947d2aab9b7efc29'), 
         ],
 
         'ses' => [

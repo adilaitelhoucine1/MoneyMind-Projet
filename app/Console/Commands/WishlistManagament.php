@@ -29,7 +29,7 @@ class WishlistManagament extends Command
      */
     public function handle()
     {
-        $this->info('Starting wishlist management check...');
+        //$this->info('Starting wishlist management check...');
 
     
             $users = User::whereNotNull('salaire_mensuel')

@@ -15,6 +15,12 @@ use App\Http\Controllers\PasswordController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckIfAdmin;
 use App\Http\Middleware\CheckIfUser;
+use App\Http\Controllers\TestEmailController;
+
+
+Route::get('/test-email', [TestEmailController::class, 'sendTestEmail']);
+
+
 
 
 Route::get('/', [HomeController::class, 'redirect'])->name('dashboard');
