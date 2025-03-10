@@ -19,6 +19,10 @@ return new class extends Migration
             $table->decimal('prix_estime', 10, 2);
             $table->decimal('montant_actuel', 10, 2)->default(0);
             $table->enum('priorite', ['faible', 'moyenne', 'élevée']);
+            $table->string('status')->default('pending');
+            $table->timestamp('date_realisation')->nullable();
+            $table->decimal('montant_realise', 10, 2)->nullable();
+            $table->decimal('progression', 5, 2)->default(0);
             $table->timestamps();
         });
     }

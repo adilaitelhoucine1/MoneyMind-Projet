@@ -299,9 +299,7 @@
                 <h2 class="mb-2">Gestion des Utilisateurs</h2>
                 <p class="mb-0">Gérez et surveillez tous les utilisateurs de la plateforme</p>
             </div>
-            <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                <i class="fas fa-plus me-2"></i>Ajouter un Utilisateur
-            </button>
+        
         </div>
     </div>
 
@@ -406,44 +404,7 @@
     </div>
 </div>
 
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Ajouter un Utilisateur</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label class="form-label">Nom complet</label>
-                        <input type="text" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email</label>
-                        <input type="email" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Mot de passe</label>
-                        <input type="password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Rôle</label>
-                        <select class="form-select">
-                            <option>Utilisateur</option>
-                            <option>Administrateur</option>
-                        </select>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary">Ajouter</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <!-- Edit & Delete Modals (similar structure to Add Modal) -->
 @endsection 

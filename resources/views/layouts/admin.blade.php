@@ -321,60 +321,9 @@
                     </li>
                 </ul>
                 
-                <div class="admin-menu-label">Transactions</div>
-                <ul class="admin-nav">
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-arrow-down"></i></span>
-                            <span class="admin-nav-text">Dépenses</span>
-                        </a>
-                    </li>
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-arrow-up"></i></span>
-                            <span class="admin-nav-text">Revenus</span>
-                        </a>
-                    </li>
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-exchange-alt"></i></span>
-                            <span class="admin-nav-text">Transferts</span>
-                        </a>
-                    </li>
-                </ul>
                 
-                <div class="admin-menu-label">Rapports</div>
-                <ul class="admin-nav">
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-chart-line"></i></span>
-                            <span class="admin-nav-text">Statistiques</span>
-                        </a>
-                    </li>
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-file-alt"></i></span>
-                            <span class="admin-nav-text">Rapports</span>
-                        </a>
-                    </li>
-                </ul>
                 
-                <div class="admin-menu-label">Paramètres</div>
-                <ul class="admin-nav">
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-cog"></i></span>
-                            <span class="admin-nav-text">Configuration</span>
-                        </a>
-                    </li>
-                    <li class="admin-nav-item">
-                        <a href="#" class="admin-nav-link">
-                            <span class="admin-nav-icon"><i class="fas fa-bell"></i></span>
-                            <span class="admin-nav-text">Notifications</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+  
             
             <div class="admin-sidebar-profile">
                 <div class="admin-profile-info">
