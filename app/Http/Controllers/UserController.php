@@ -43,8 +43,15 @@ class UserController extends Controller
         $categoryCount= DB::table('categories')->count();
         $TotalAllDepenses=$totalDepenses+$totalDepensesRecurrente;
         $budget = User::where('id', Auth::user()->id)->value('Budjet');
-        $BudjetRestant=$budget-$TotalAllDepenses;
-        $pourcentageRestant=($TotalAllDepenses*100)/$budget;
+        if($budget !=0){
+
+            $BudjetRestant=$budget-$TotalAllDepenses;
+    
+            $pourcentageRestant=($TotalAllDepenses*100)/$budget;
+        }else{
+            $BudjetRestant=0;
+            $pourcentageRestant=0;
+        }
         
         $suggestions = $this->geminiService->getSuggestions($depenses, $depensesRecurrentes, $budget);
 
