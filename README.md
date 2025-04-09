@@ -25,7 +25,7 @@ MoneyMind is a modern financial management application built with Laravel that h
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/MoneyMind.git
+git clone https://github.com/adilaitelhoucine1/MoneyMind.git
 ```
 
 2. Install dependencies
@@ -73,13 +73,10 @@ Contributions are welcome! Please feel free to submit a Pull Request. For major 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Contact
-
-Your Name - [@yourtwitter](https://twitter.com/yourtwitter) - email@example.com
-
-Project Link: [https://github.com/yourusername/MoneyMind](https://github.com/yourusername/MoneyMind)
+Project Link: [https://github.com/adilaitelhoucine1/MoneyMind](https://github.com/adilaitelhoucine1/MoneyMind)
 
 ---
 
 <div align="center">
-  Made with ❤️ by [Your Name]
+  Made with ❤️ by [Adil Ait Elhoucine]
 </div>
