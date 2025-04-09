@@ -21,12 +21,12 @@ use App\Http\Controllers\TestEmailController;
 
 
 
-DB::table('product')
-    ->join('commandes', 'product_id', '=', 'commande_produit_id')
-    ->select('product_id', 'product_nom', DB::raw('COUNT(commandes_id) as total_commandes'))
-    ->groupBy('product_id', 'product_nom')
-    ->having('total_commandes', '>', 10)
-    ->get();
+// DB::table('product')
+//     ->join('commandes', 'product_id', '=', 'commande_produit_id')
+//     ->select('product_id', 'product_nom', DB::raw('COUNT(commandes_id) as total_commandes'))
+//     ->groupBy('product_id', 'product_nom')
+//     ->having('total_commandes', '>', 10)
+//     ->get();
 
 
 // Route::middleware('auth')->group(function () {
